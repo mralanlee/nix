@@ -2,7 +2,7 @@
   imports = [
     ../common
     ./git.nix
-    ./hypr-paper-lock.nix
+    ./options.nix
     ./packages.nix
   ];
 }
