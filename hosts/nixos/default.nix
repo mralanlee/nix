@@ -46,12 +46,12 @@
     firmware = [ pkgs.firmwareLinuxNonfree ];
   };
 
-  programs.hyprland = {
-    enable = true;
-    xwayland = {
-      enable = true;
-    };
-  };
+  # programs.hyprland = {
+  #   enable = true;
+  #   xwayland = {
+  #     enable = true;
+  #   };
+  # };
 
   users.users.alan = {
     isNormalUser = true;
