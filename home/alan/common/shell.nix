@@ -16,6 +16,26 @@
         ];
       };
 
+      initExtra = ''
+        # tmux autostart
+        export ZSH_TMUX_AUTOSTART=true
+        if [ "$TMUX" = "" ]; then tmux; fi
+
+        # fzf
+        export FZF_DEFAULT_OPTS='-x --height 40% --layout=reverse --border'
+        export FZF_CTRL_T_OPTS='--select-1 --exit-0'
+        export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
+        export FZF_ALT_C_OPTS="--select-1 --exit-0 --preview 'tree -C {} | head -200'"
+        export FZF_TMUX=1
+        export FZF_TMUX_OPTS='-d 40%'
+
+
+        if [ $commands[kubectl] ]; then
+          source <(kubectl completion zsh)
+          # complete -F __start_kubectl k
+        fi
+      '';
+
       autosuggestion.enable = true;
       syntaxHighlighting.enable = true;
 
@@ -30,6 +50,10 @@
         "kx" = "kubectx";
         "qf" = "find. -type f | fzf";
       };
+    };
+
+    ripgrep = {
+      enable = true;
     };
 
     starship = {
