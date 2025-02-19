@@ -2,7 +2,7 @@
   imports = [
     ../common
     ./git.nix
-    ./options.nix
+    ./home.nix
     ./packages.nix
   ];
 }
