@@ -1,4 +1,8 @@
 {pkgs, ...}: {
+  nixpkgs.config.permittedInsecurePackages = [
+    "openssl-1.1.1w"
+  ];
+
   environment.systemPackages = with pkgs; [
     age
     alacritty
@@ -10,6 +14,7 @@
     xclip
     gnumake
     waybar
+    kitty
     rofi-wayland
     wayland
     wayland-protocols

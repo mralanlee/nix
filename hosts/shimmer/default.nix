@@ -15,6 +15,7 @@
 
   networking.hostName = "shimmer";
   networking.networkmanager.enable = true;
+  programs.nm-applet.enable = true;
 
   hardware.graphics.extraPackages = with pkgs; [
     vaapiIntel

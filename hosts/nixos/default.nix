@@ -36,6 +36,15 @@
     };
   };
 
+  networking.interfaces.wlp1s0f0 = {
+    useDHCP = true;
+    ipv4.addresses = [
+      {
+        address = "192.168.86.1"; prefixLength = 24;
+      }
+    ];
+  };
+
   security = {
     rtkit.enable = true;
   };
@@ -45,13 +54,6 @@
     enableAllFirmware = true;
     firmware = [ pkgs.firmwareLinuxNonfree ];
   };
-
-  # programs.hyprland = {
-  #   enable = true;
-  #   xwayland = {
-  #     enable = true;
-  #   };
-  # };
 
   users.users.alan = {
     isNormalUser = true;
@@ -85,7 +87,7 @@
     XDG_SESSION_TYPE = "wayland";
     XDG_CURRENT_DESKTOP = "Hyprland";
     XDG_SESSION_DESKTOP = "Hyprland";
-    WLR_BACKEND = "gl"; # No GPU :'(
+    WLR_BACKEND = "gl";
     QT_QPA_PLATFORM = "wayland";
     GDK_BACKEND = "wayland";
     NIXOS_OZONE_WL = "1";
