@@ -4,6 +4,7 @@
     aws-workspaces
     obsidian
     hyprpaper
+    hyprlock
     openconnect
     gpclient
     gpauth
