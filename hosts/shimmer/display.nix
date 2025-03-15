@@ -1,4 +1,4 @@
-{
+{config, ...}: {
   services.xserver = {
     enable = true;
     displayManager = {
@@ -6,6 +6,9 @@
 
       gdm = {
         enable = true;
+        settings = {
+          daemon.AutomaticLoginEnable = false;
+        };
         wayland = true;
       };
     };
@@ -18,4 +21,6 @@
       enable = true;
     };
   };
+
+  environment.etc."gdm/monitors.xml".source = "${config.users.users.alan.home}/config/gdm/monitors.xml";
 }
