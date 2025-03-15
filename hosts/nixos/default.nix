@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   imports = [
     ../common
+    ./system-pkgs.nix
   ];
 
   time.timeZone = "America/Los_Angeles";
