@@ -15,6 +15,7 @@
     gnumake
     waybar
     kitty
+    pavucontrol
     rofi-wayland
     wayland
     wayland-protocols
