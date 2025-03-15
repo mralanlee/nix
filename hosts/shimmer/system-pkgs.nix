@@ -4,23 +4,32 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    age
     alacritty
-    git
     ripgrep
     lazygit
     google-chrome
-    libgcc
     xclip
-    gnumake
     waybar
     kitty
     pavucontrol
     rofi-wayland
+
+    # clipboard
+    wl-clipboard
+    cliphist
+    
+    # system
+    wayshot
+    swappy
+    swww
+
+    nautilus  
+
+
+    # wayland specific
     wayland
     wayland-protocols
     wayland-utils
-    wl-clipboard
     xwayland
     wlroots
     wlprop
