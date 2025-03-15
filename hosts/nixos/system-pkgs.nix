@@ -7,5 +7,5 @@
     git
     libgcc
     gnumake
-  ]
+  ];
 }
