@@ -9,5 +9,10 @@
         source =  ../dotfiles/hypr;
         recursive = true;
     };
+
+    "~/.config/gdm" = {
+        source =  ../dotfiles/gdm;
+        recursive = true;
+    };
   };
 }
