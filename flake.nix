@@ -8,6 +8,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    zen-browser.url = "github:0xc000022070/zen-browser-flake";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
@@ -17,6 +18,7 @@
     nixos-hardware,
     sops-nix,
     home-manager,
+    zen-browser,
     ... 
   } @ inputs: let
    forAllSystems = nixpkgs.lib.genAttrs [
@@ -39,7 +41,7 @@
     nixosConfigurations = {
       shimmer = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        # specialArgs = { inherit inputs outputs; };
+        specialArgs = { inherit inputs; };
         modules = [
           ./hosts/shimmer
           home-manager.nixosModules.home-manager
@@ -50,6 +52,7 @@
             home-manager.users.alan.imports = [
                 ./home/alan/nixos
             ]; # this will be nixos config
+            home-manager.extraSpecialArgs = { inherit inputs; system = "x86_64-linux"; };
           }
         ];
       };

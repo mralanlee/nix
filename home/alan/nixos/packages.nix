@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{pkgs, inputs, system, ...}: {
   home.packages = with pkgs; [
     zoom-us
     aws-workspaces
@@ -9,5 +9,6 @@
     gpclient
     gpauth
     slack
+    inputs.zen-browser.packages."${system}".twilight
   ];
 }
