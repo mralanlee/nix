@@ -18,21 +18,46 @@
     LC_TIME = "en_US.UTF-8";
   };
 
+  hardware.pulseaudio = {
+    enable = true;
+    support32Bit = true;
+  };
+
   services = {
     logind.lidSwitch = "suspend-then-hibernate";
     printing.enable = true;
     openssh.enable = true;
     dbus.enable = true;
     gvfs.enable = true;
-    pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-    };
+    pipewire.enable = false;
+    # pipewire = {
+    #   enable = true;
+    #   alsa.enable = true;
+    #   alsa.support32Bit = true;
+    #   pulse.enable = true;
+    #   jack.enable = true;
+    #   wireplumber.enable = true;
+    #   wireplumber.extraConfig = {};
+    #
+    #   extraConfig.pipewire = {
+    #     "default.rt.prio" = 88;
+    #     "default.rt.time.soft" = 200000;
+    #     "default.rt.time.hard" = 300000;
+    #     "nice.level" = -15;
+    #     "default.clock.rate" = 48000;
+    #     "default.clock.quantum" = 1024;
+    #     "default.clock.min-quantum" = 32;
+    #   };
+    # };
     xserver.xkb = {
       layout = "us";
       variant = "";
+    };
+    tlp = {
+      enable = true;
+      settings = {
+        USB_AUTOSUSPEND = 1;
+      };
     };
   };
 
