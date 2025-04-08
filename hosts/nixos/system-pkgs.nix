@@ -7,5 +7,8 @@
     git
     libgcc
     gnumake
+
+    dig
+    dnsutils
   ];
 }
