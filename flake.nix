@@ -10,6 +10,25 @@
     };
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    darwin = {
+      url = "github:lnl7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+    homebrew-core = {
+      url = "github:homebrew/homebrew-core";
+      flake = false;
+    };
+    homebrew-cask = {
+      url = "github:homebrew/homebrew-cask";
+      flake = false;
+    };
+
+    aerospace-tap = {
+      url = "github:nikitabobko/homebrew-tap";
+      flake = false;
+    };
   };
 
   outputs = { 
@@ -19,6 +38,11 @@
     sops-nix,
     home-manager,
     zen-browser,
+    darwin,
+    nix-homebrew,
+    homebrew-core,
+    homebrew-cask,
+    aerospace-tap,
     ... 
   } @ inputs: let
    forAllSystems = nixpkgs.lib.genAttrs [
@@ -56,6 +80,35 @@
           }
         ];
       };
+    };
+
+    darwinConfigurations = {
+      drumwave = darwin.lib.darwinSystem {
+          system = "aarch64-darwin";
+          modules = [
+            ./hosts/darwin
+            home-manager.darwinModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.alan = import ./home/alan/darwin;
+            }
+            nix-homebrew.darwinModules.nix-homebrew
+            {
+              nix-homebrew = {
+                enable = true;
+                enableRosetta = true;
+
+                user = "alan";
+                taps = {
+                  "homebrew/homebrew-core" = homebrew-core;
+                  "homebrew/homebrew-cask" = homebrew-cask;
+                  "nikitabobko/tap" = aerospace-tap;
+                };
+              };
+            }
+          ];
+        };
     };
   };
 }
