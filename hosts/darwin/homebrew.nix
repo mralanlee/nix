@@ -5,8 +5,8 @@
       autoUpdate = false;
     };
     onActivation = {
-      autoUpdate = false;
-      upgrade = false;
+      autoUpdate = true;
+      upgrade = true;
       cleanup = "zap";
     };
     taps = [
