@@ -8,7 +8,6 @@
     openconnect
     gpclient
     gpauth
-    slack
     inputs.zen-browser.packages."${system}".twilight
   ];
 }
