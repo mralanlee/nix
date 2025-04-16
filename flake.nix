@@ -10,20 +10,26 @@
     };
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+
+    # macos
     darwin = {
       url = "github:lnl7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
       flake = false;
     };
+
     homebrew-cask = {
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
+
+    mac-app-util.url = "github:hraban/mac-app-util";
 
     aerospace-tap = {
       url = "github:nikitabobko/homebrew-tap";
@@ -42,6 +48,7 @@
     nix-homebrew,
     homebrew-core,
     homebrew-cask,
+    mac-app-util,
     aerospace-tap,
     ... 
   } @ inputs: let
@@ -88,6 +95,12 @@
           modules = [
             ./hosts/darwin
             home-manager.darwinModules.home-manager
+            mac-app-util.darwinModules.default
+            {
+              home-manager.sharedModules = [
+                mac-app-util.homeManagerModules.default
+              ];
+            }
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
