@@ -4,10 +4,7 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    alacritty
-    ripgrep
     lazygit
-    google-chrome
     xclip
     waybar
     kitty

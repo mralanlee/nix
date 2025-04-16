@@ -49,6 +49,5 @@
     options snd slots=snd-hda-intel
     options snd_hda_intel enable=0,1
   '';
-
   system.stateVersion = "25.05";
 }
