@@ -23,6 +23,7 @@
       shfmt
       terraform-ls
       yaml-language-server
+      yamllint
     ];
   };
 }
