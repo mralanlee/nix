@@ -101,13 +101,9 @@
   };
 
   environment.variables = {
-    EDITOR = "nvim";
     SYSTEMD_EDITOR = "nvim";
-    VISUAL = "nvim";
   };
 
-  nixpkgs.config.allowUnfree = true;
-  nix.settings.experimental-features = [ "nix-command" "flakes"];
   environment.sessionVariables = {
     QT_WAYLAND_DISABLE_WINDOWDECORATION = 1;
     WLR_NO_HARDWARE_CURSORS = 1;
