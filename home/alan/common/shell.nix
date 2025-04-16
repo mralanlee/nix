@@ -34,6 +34,23 @@
           source <(kubectl completion zsh)
           # complete -F __start_kubectl k
         fi
+
+        export PATH=$PATH:/Users/alan/.spicetify
+        eval "$(/Users/alan/.local/bin/mise activate zsh)"
+        source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+        eval "$(~/.local/bin/mise activate zsh)"
+        export PATH="$HOME/.krew/bin:$PATH"
+
+        export ZSH_CUSTOM=$HOME/.config/zsh
+        export ZSHFUNCTIONS=$HOME/.config/zsh/functions.zsh
+        export ZSHPATH=$HOME/.config/zsh/path.zsh
+        export ZSHENV=$ZSH_CUSTOM/.zshenv
+
+        # source $ZSH_CUSTOM/.zshenv
+        source $ZSHPATH
+        source $ZSHFUNCTIONS
+        source $ZSHENV
+        export PATH=$PATH:/opt/homebrew/bin
       '';
 
       autosuggestion.enable = true;
@@ -43,12 +60,17 @@
         "gco" = "git checkout";
         "vimc" = "nvim ~/.config/nvim";
         "cat" = "bat";
-        "ls" = "eza --icons";
         "ll" = "eza --icons -l -g";
-        "k" = "kubectl";
         "kns" = "kubens";
         "kx" = "kubectx";
         "qf" = "find. -type f | fzf";
+        "docker" = "podman";
+        "k" = "kubectl";
+        "kcm" ="kubectl kc";
+        "l" = "eza";
+        "la" = "eza -a";
+        "ls" = "eza --icons --color=auto";
+        "rebuild" = "darwin-rebuild switch --flake ~/projects/nix";
       };
     };
 
