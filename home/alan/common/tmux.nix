@@ -5,6 +5,7 @@
     plugins = with pkgs; [
       tmuxPlugins.yank
       tmuxPlugins.vim-tmux-navigator
+      tmuxPlugins.catppuccin
       tmuxPlugins.tmux-fzf
       tmuxPlugins.sensible
     ];
@@ -37,6 +38,8 @@
       bind-key Right resize-pane -R 10
       set -g default-terminal 'screen-256color'
       set -g mouse on
+
+      set -g @catppuccin_flavor 'mocha'
       ";
   };
 }
