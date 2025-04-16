@@ -2,6 +2,7 @@
   imports = [
     ../common
     ./system-pkgs.nix
+    ./nix.nix
   ];
 
   time.timeZone = "America/Los_Angeles";
