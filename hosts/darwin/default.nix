@@ -3,6 +3,7 @@
     ../common
     ./homebrew.nix
     ./nix.nix
+    ./packages.nix
   ];
 
   users.users.alan.home = "/Users/alan";
