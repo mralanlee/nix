@@ -37,7 +37,6 @@
 
         export PATH=$PATH:/Users/alan/.spicetify
         eval "$(/Users/alan/.local/bin/mise activate zsh)"
-        source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
         eval "$(~/.local/bin/mise activate zsh)"
         export PATH="$HOME/.krew/bin:$PATH"
 
