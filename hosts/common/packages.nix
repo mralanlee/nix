@@ -3,5 +3,7 @@
     alacritty
     ripgrep
     google-chrome
+    spotify
+    spicetify-cli
   ];
 }
