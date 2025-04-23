@@ -32,7 +32,6 @@
     # terraform
     terraform-docs
     terraform
-    terraform
     tgswitch 
     hclfmt
     # terraform-ls moved to neovim config
