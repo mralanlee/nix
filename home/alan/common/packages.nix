@@ -3,6 +3,7 @@
     awscli2
     fd
     htop
+    tree
     jq
 
     # chat
@@ -22,6 +23,7 @@
     podman
     podman-compose
     podman-tui
+    kubeconform
     kubectl
     k9s
     lens
@@ -31,6 +33,8 @@
     terraform-docs
     terraform
     terraform
+    tgswitch 
+    hclfmt
     # terraform-ls moved to neovim config
   ];
 }
