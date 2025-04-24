@@ -1,5 +1,5 @@
 {pkgs, ...} : let
-  yaz-plugins = pkgs.fetchFromGitHub {
+  yazi-plugins = pkgs.fetchFromGitHub {
   owner = "yazi-rs";
 		repo = "plugins";
 		rev = "...";
