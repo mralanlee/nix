@@ -9,5 +9,6 @@
     ./shell.nix
     ./ssh.nix
     ./tmux.nix
+    ./yazi.nix
   ];
 }

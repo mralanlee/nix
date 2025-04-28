@@ -10,11 +10,5 @@
       git = true;
       icons = "auto";
     };
-    yazi = {
-      enable = true;
-      enableBashIntegration = true;
-      enableFishIntegration = true;
-      enableZshIntegration = true;
-    };
   };
 }
