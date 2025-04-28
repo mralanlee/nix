@@ -18,6 +18,8 @@
     alejandra
     hub
     kind
+    lua
+    zed-editor
 
     # containerization and related tooling
     podman
