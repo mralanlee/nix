@@ -19,10 +19,15 @@
       "aerospace"
       "betterdisplay"
       "karabiner-elements"
+      "sf-symbols"
+      "font-sf-mono"
+      "font-sf-pro"
     ];
 
     brews = [
       "tfenv"
+      "switchaudio-osx"
+      "nowplaying-cli"
     ];
 
     masApps = {
