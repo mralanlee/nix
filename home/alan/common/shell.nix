@@ -1,5 +1,10 @@
 {pkgs, ...}: {
   programs = {
+    atuin = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+
     zsh = {
       enable = true;
       enableCompletion = true;
