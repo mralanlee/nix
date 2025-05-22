@@ -8,7 +8,6 @@
     ../nixos
     ./boot.nix
     ./display.nix
-    ./fonts.nix
     ./system-pkgs.nix
     ./hardware-configuration.nix
   ];
@@ -25,19 +24,6 @@
   ];
 
   services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
-
-  # thunderbolt
-  services.hardware.bolt.enable = true;
-
-  # bluetooth
-  services.blueman.enable = true;
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
-  hardware.bluetooth.settings = {
-    General = {
-    	Experimental = true;
-    };
-  };
 
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="usb", TEST=="power/control", ATTR{power/control}="on"

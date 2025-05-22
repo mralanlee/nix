@@ -3,6 +3,7 @@
     ../common
     ./system-pkgs.nix
     ./nix.nix
+    ./fonts.nix
   ];
 
   time.timeZone = "America/Los_Angeles";
@@ -63,13 +64,26 @@
     };
   };
 
+  # thunderbolt
+  services.hardware.bolt.enable = true;
+
+  # bluetooth
+  services.blueman.enable = true;
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  hardware.bluetooth.settings = {
+    General = {
+    	Experimental = true;
+    };
+  };
+
   networking.interfaces.wlp1s0f0 = {
     useDHCP = true;
-    ipv4.addresses = [
-      {
-        address = "192.168.86.1"; prefixLength = 24;
-      }
-    ];
+    # ipv4.addresses = [
+    #   {
+    #     address = "192.168.86.1"; prefixLength = 24;
+    #   }
+    # ];
   };
 
   security = {
