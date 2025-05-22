@@ -5,7 +5,7 @@
   ...
 }: {
   imports = [
-    ../nixos
+    ../../os/nixos
     ./boot.nix
     ./display.nix
     ./system-pkgs.nix

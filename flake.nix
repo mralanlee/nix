@@ -58,13 +58,6 @@
       "aarch64-darwin"
     ]; 
   in rec {
-    # packages = forAllSystems (
-    #   system: let
-    #     pkgs = nixpkgs.legacyPackages.${system};
-    #   in
-    #     import ./pkgs {inherit pkgs;}
-    # );
-
     formatter = forAllSystems (
       system: nixpkgs.legacyPackages.${system}.alejandra
     );
@@ -93,7 +86,7 @@
       drumwave = darwin.lib.darwinSystem {
           system = "aarch64-darwin";
           modules = [
-            ./hosts/darwin
+            ./hosts/drumwave
             home-manager.darwinModules.home-manager
             mac-app-util.darwinModules.default
             {
