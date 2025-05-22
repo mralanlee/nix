@@ -52,7 +52,7 @@
     aerospace-tap,
     ... 
   } @ inputs: let
-   forAllSystems = nixpkgs.lib.genAttrs [
+    forAllSystems = nixpkgs.lib.genAttrs [
       "x86_64-linux"
       "aarch64-linux"
       "aarch64-darwin"
@@ -85,7 +85,7 @@
         system = "x86_64-linux";
         specialArgs = { inherit inputs; };
         modules = [
-          ./hosts/shimmer
+          ./hosts/yoshi
           home-manager.nixosModules.home-manager
           sops-nix.nixosModules.sops
           {
