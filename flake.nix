@@ -80,41 +80,58 @@
           }
         ];
       };
+      yoshi = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = { inherit inputs; };
+        modules = [
+          ./hosts/shimmer
+          home-manager.nixosModules.home-manager
+          sops-nix.nixosModules.sops
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.alan.imports = [
+                ./home/alan/nixos
+            ]; # this will be nixos config
+            home-manager.extraSpecialArgs = { inherit inputs; system = "x86_64-linux"; };
+          }
+        ];
+      };
     };
 
     darwinConfigurations = {
       drumwave = darwin.lib.darwinSystem {
-          system = "aarch64-darwin";
-          modules = [
-            ./hosts/drumwave
-            home-manager.darwinModules.home-manager
-            mac-app-util.darwinModules.default
-            {
-              home-manager.sharedModules = [
-                mac-app-util.homeManagerModules.default
-              ];
-            }
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.alan = import ./home/alan/darwin;
-            }
-            nix-homebrew.darwinModules.nix-homebrew
-            {
-              nix-homebrew = {
-                enable = true;
-                enableRosetta = true;
+        system = "aarch64-darwin";
+        modules = [
+          ./hosts/drumwave
+          home-manager.darwinModules.home-manager
+          mac-app-util.darwinModules.default
+          {
+            home-manager.sharedModules = [
+              mac-app-util.homeManagerModules.default
+            ];
+          }
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.alan = import ./home/alan/darwin;
+          }
+          nix-homebrew.darwinModules.nix-homebrew
+          {
+            nix-homebrew = {
+              enable = true;
+              enableRosetta = true;
 
-                user = "alan";
-                taps = {
-                  "homebrew/homebrew-core" = homebrew-core;
-                  "homebrew/homebrew-cask" = homebrew-cask;
-                  "nikitabobko/tap" = aerospace-tap;
-                };
+              user = "alan";
+              taps = {
+                "homebrew/homebrew-core" = homebrew-core;
+                "homebrew/homebrew-cask" = homebrew-cask;
+                "nikitabobko/tap" = aerospace-tap;
               };
-            }
-          ];
-        };
+            };
+          }
+        ];
+      };
     };
   };
 }
