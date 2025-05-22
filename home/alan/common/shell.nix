@@ -61,6 +61,7 @@
       syntaxHighlighting.enable = true;
 
       shellAliases = {
+        "fixgit" = "ssh-add --apple-use-keychain ~/.ssh/id_ed25519";
         "gco" = "git checkout";
         "vimc" = "nvim ~/.config/nvim";
         "cat" = "bat";
