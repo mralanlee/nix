@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Check if fzf is installed
+if ! command -v fzf &> /dev/null; then
+    echo "fzf is not installed. Please install it first."
+    exit 1
+fi
+
+# Check if AWS config file exists
+AWS_CONFIG_FILE="${AWS_CONFIG_FILE:-$HOME/.aws/config}"
+if [ ! -f "$AWS_CONFIG_FILE" ]; then
+    echo "AWS config file not found at $AWS_CONFIG_FILE"
+    exit 1
+fi
+
+# Extract profile names from AWS config
+# Look for lines with [profile something] and extract 'something'
+profiles=$(grep -E '^\[profile [^]]+\]' "$AWS_CONFIG_FILE" | sed -E 's/\[profile ([^]]+)\]/\1/g')
+
+if [ -z "$profiles" ]; then
+    echo "No AWS profiles found in $AWS_CONFIG_FILE"
+    exit 1
+fi
+
+# Pipe the profiles to fzf for selection
+selected_profile=$(echo "$profiles" | fzf --height 40% --border --prompt="Select AWS profile: ")
+
+# Check if a profile was selected
+if [ -z "$selected_profile" ]; then
+    echo "No profile selected"
+    exit 1
+fi
+
+# Run the AWS SSO login command with the selected profile
+echo "Logging in with profile: $selected_profile"
+aws sso login --profile "$selected_profile"
