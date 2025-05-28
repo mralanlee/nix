@@ -1,13 +1,9 @@
 {pkgs, inputs, system, ...}: {
   home.packages = with pkgs; [
-    zoom-us
-    aws-workspaces
     obsidian
     hyprpaper
+    rofi
     hyprlock
-    openconnect
-    gpclient
-    gpauth
     inputs.zen-browser.packages."${system}".twilight
   ];
 }
