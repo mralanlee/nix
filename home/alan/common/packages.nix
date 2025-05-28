@@ -9,7 +9,7 @@
     # chat
     telegram-desktop
     slack
-    signal-desktop
+    signal-desktop-bin
     discord
 
     # developer tools

@@ -6,6 +6,7 @@
     ./packages.nix
   ];
 
+  system.primaryUser = "alan";
   users.users.alan.home = "/Users/alan";
   programs.zsh.enable = true;
 
