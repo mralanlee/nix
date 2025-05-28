@@ -29,4 +29,5 @@
 # Enable fingerprint reader support
   services.fprintd.enable = true;
   
+  system.stateVersion = "25.05";
 }
