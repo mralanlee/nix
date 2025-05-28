@@ -1,7 +1,6 @@
 {pkgs, ...}: {
   imports = [
     ../common
-    ../1password.nix
     ./system-pkgs.nix
     ./nix.nix
     ./fonts.nix
@@ -36,6 +35,15 @@
     _1password-gui = {
       enable = true;
       polkitPolicyOwners = ["alan"];
+    };
+  };
+
+  environment.etc = {
+    "1password/custom_allowed_browsers" = {
+      text = ''
+        zen-bin
+      '';
+      mode = "0755";
     };
   };
 
