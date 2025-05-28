@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   imports = [
     ../common
+    ../1password.nix
     ./system-pkgs.nix
     ./nix.nix
     ./fonts.nix
@@ -24,6 +25,18 @@
   hardware.pulseaudio = {
     enable = true;
     support32Bit = true;
+  };
+
+  
+  programs = {
+    _1password = {
+      enable = true;
+    };
+
+    _1password-gui = {
+      enable = true;
+      polkitPolicyOwners = ["alan"];
+    };
   };
 
   services = {
