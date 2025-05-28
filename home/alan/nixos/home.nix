@@ -10,7 +10,7 @@
         recursive = true;
     };
 
-    "~/.config/gdm" = {
+    ".config/gdm" = {
         source =  ../dotfiles/gdm;
         recursive = true;
     };
