@@ -10,5 +10,7 @@
     packages = with pkgs; [ terminus_font ]; # Ensure the font package is included
   };
 
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.consoleMode = "2";
 }

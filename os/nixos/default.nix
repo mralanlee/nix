@@ -77,15 +77,6 @@
     };
   };
 
-  networking.interfaces.wlp1s0f0 = {
-    useDHCP = true;
-    # ipv4.addresses = [
-    #   {
-    #     address = "192.168.86.1"; prefixLength = 24;
-    #   }
-    # ];
-  };
-
   security = {
     rtkit.enable = true;
   };
@@ -109,10 +100,10 @@
     extraPortals = [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-hyprland ];
   };
 
-  sops.secrets.github_token = {
-    format = "yaml";
-    sopsFile = ./secrets/github_token.yaml;
-  };
+  # sops.secrets.github_token = {
+  #   format = "yaml";
+  #   sopsFile = ./secrets/github_token.yaml;
+  # };
 
   environment.variables = {
     SYSTEMD_EDITOR = "nvim";
