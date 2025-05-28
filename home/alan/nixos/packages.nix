@@ -5,5 +5,6 @@
     rofi
     hyprlock
     inputs.zen-browser.packages."${system}".twilight
+    git-credential-manager
   ];
 }
