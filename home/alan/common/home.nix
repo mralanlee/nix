@@ -5,6 +5,12 @@
       ".tmux.conf" = {
           source =  ../dotfiles/tmux/.tmux.conf;
       };
+      ".aider.conf.yml" = {
+          source = ../dotfiles/aider/.aider.conf.yml;
+      };
+      ".aider.model.settings.yml" = {
+          source = ../dotfiles/aider/.aider.model.settings.yml;
+      };
     };
   };
 

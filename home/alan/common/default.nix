@@ -6,6 +6,7 @@
     ./kubernetes.nix
     ./neovim.nix
     ./packages.nix
+    ./scripts.nix
     ./shell.nix
     ./ssh.nix
     ./tmux.nix
