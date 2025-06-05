@@ -4,6 +4,7 @@
     ./system-pkgs.nix
     ./nix.nix
     ./fonts.nix
+    ./laptop.nix
   ];
 
   time.timeZone = "America/Los_Angeles";
@@ -21,7 +22,7 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  hardware.pulseaudio = {
+  services.pulseaudio = {
     enable = true;
     support32Bit = true;
   };
@@ -48,7 +49,6 @@
   };
 
   services = {
-    logind.lidSwitch = "suspend-then-hibernate";
     printing.enable = true;
     openssh.enable = true;
     dbus.enable = true;

@@ -21,7 +21,7 @@
         ];
       };
 
-      initExtra = ''
+      initContent = ''
         # tmux autostart
         export ZSH_TMUX_AUTOSTART=true
         if [ "$TMUX" = "" ]; then tmux; fi

@@ -14,5 +14,10 @@
         source =  ../dotfiles/gdm;
         recursive = true;
     };
+    
+    # Additional monitor config for lid-closed scenarios
+    ".config/gdm/monitors-lid-closed.xml" = {
+        source = ../dotfiles/gdm/monitors-lid-closed.xml;
+    };
   };
 }

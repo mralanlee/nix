@@ -1,5 +1,9 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
+    # fonts
+    nerd-fonts.fira-code
+    nerd-fonts.jetbrains-mono
+    
     awscli2
     fd
     htop
@@ -15,6 +19,7 @@
     # developer tools
     mise
     devbox
+    claude-code
     alejandra
     hub
     kind

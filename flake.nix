@@ -89,6 +89,9 @@
           home-manager.nixosModules.home-manager
           sops-nix.nixosModules.sops
           {
+            hardware.laptop.enable = true;
+          }
+          {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.alan.imports = [
