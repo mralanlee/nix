@@ -1,4 +1,4 @@
-# Alan's Nix Configuration
+# Nix Configuration
 
 This repository contains my personal Nix configuration for both NixOS and macOS (Darwin) systems. It uses Nix flakes to manage system configurations, home-manager for user-specific settings, and provides a modular structure for easy maintenance and extensibility.
 
@@ -28,6 +28,7 @@ This repository contains my personal Nix configuration for both NixOS and macOS 
 ### 1. **Flake Structure**
 
 The `flake.nix` file is the entry point that:
+
 - Defines inputs (nixpkgs, home-manager, darwin, hardware modules, etc.)
 - Configures NixOS systems (`shimmer`, `yoshi`)
 - Configures macOS systems (`drumwave`)
@@ -46,6 +47,7 @@ Host Configuration (e.g., hosts/shimmer/)
 ```
 
 This allows for:
+
 - **Maximum code reuse**: Common settings are defined once
 - **Platform-specific overrides**: Each layer can override or extend configurations
 - **Host-specific customization**: Individual machines can have unique settings
@@ -53,6 +55,7 @@ This allows for:
 ### 3. **Module System**
 
 Each directory contains modular Nix files:
+
 - `default.nix`: Main entry point that imports other modules
 - `packages.nix`: Package installations
 - `home.nix`: Home-manager specific settings
@@ -75,10 +78,12 @@ Packages are distributed through multiple layers:
 ## Supported Systems
 
 ### NixOS Hosts
+
 - **shimmer**: x86_64-linux system with Intel graphics, DisplayLink support
 - **yoshi**: x86_64-linux system
 
 ### macOS Hosts
+
 - **drumwave**: aarch64-darwin (Apple Silicon) with Homebrew integration
 
 ## Key Features
@@ -147,3 +152,4 @@ To add new packages:
 - **Terminal Multiplexer**: Tmux
 - **Development Tools**: Terraform, Kubernetes tools, Docker/Podman
 - **File Manager**: Yazi
+
