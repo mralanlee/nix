@@ -121,10 +121,6 @@
     extraPortals = [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-hyprland ];
   };
 
-  # sops.secrets.github_token = {
-  #   format = "yaml";
-  #   sopsFile = ./secrets/github_token.yaml;
-  # };
 
   environment.variables = {
     SYSTEMD_EDITOR = "nvim";

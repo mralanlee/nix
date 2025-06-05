@@ -1,5 +1,5 @@
 {
-  imports = [./nix.nix ./packages.nix];
+  imports = [./nix.nix ./packages.nix ./sops.nix];
 
   nixpkgs.config.allowUnfree = true;
 

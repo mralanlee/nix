@@ -4,5 +4,6 @@
     ripgrep
     google-chrome
     spicetify-cli
+    sops
   ];
 }

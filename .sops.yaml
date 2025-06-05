@@ -1,0 +1,7 @@
+keys:
+  - &alan age1n8hwl4ewld7fprcmyv47v6xgxc8pg2tq3h0584gsssmqtcwnsppqpwll0e
+creation_rules:
+  - path_regex: os/common/secrets/.*\.yaml$
+    key_groups:
+    - age:
+      - *alan
