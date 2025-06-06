@@ -11,11 +11,11 @@ in
   };
 
   config = mkIf cfg.enable {
-    # Laptop lid behavior - MacBook-like suspend on close
+    # Laptop lid behavior - ignore when external monitor connected, suspend otherwise
     services.logind = {
       lidSwitch = "suspend";
-      lidSwitchExternalPower = "suspend";
-      lidSwitchDocked = "suspend";
+      lidSwitchExternalPower = "ignore";
+      lidSwitchDocked = "ignore";
       extraConfig = ''
         HandlePowerKey=suspend
         IdleAction=suspend
@@ -69,10 +69,7 @@ in
       };
     };
 
-    # Disable problematic power-saving features that can cause resume delays
-    boot.blacklistedKernelModules = [ "btusb" ];
-    
-    # Load bluetooth module with fast resume parameters
+    # Load bluetooth module with fast resume parameters to prevent resume delays
     boot.extraModprobeConfig = ''
       options btusb enable_autosuspend=n
     '';
@@ -92,5 +89,13 @@ in
       daemon.AutomaticLoginEnable = false;
       daemon.TimedLoginEnable = false;
     };
+
+    # Completely disable suspend/hibernation
+    systemd.sleep.extraConfig = ''
+      AllowSuspend=no
+      AllowHibernation=no
+      AllowHybridSleep=no
+      AllowSuspendThenHibernate=no
+    '';
   };
 }

@@ -45,31 +45,24 @@
     });
   '';
   
+  # Create lid detection script for fingerprint auth
+  environment.systemPackages = with pkgs; [
+    (writeShellScriptBin "check-lid-state" ''
+      # Check if lid is closed
+      if [ -f /proc/acpi/button/lid/LID0/state ]; then
+        grep -q "closed" /proc/acpi/button/lid/LID0/state && exit 1
+      fi
+      exit 0
+    '')
+  ];
+
   # Configure PAM for fingerprint authentication
   security.pam.services = {
     login.fprintAuth = lib.mkForce true;
     sudo.fprintAuth = lib.mkForce true;
     hyprlock.fprintAuth = lib.mkForce true;
-    gdm.fprintAuth = lib.mkForce true;
-    gdm-fingerprint = {
-      text = ''
-        auth       required                    pam_shells.so
-        auth       requisite                   pam_nologin.so
-        auth       requisite                   pam_faillock.so      preauth
-        auth       required                    ${pkgs.fprintd}/lib/security/pam_fprintd.so
-        auth       optional                    pam_permit.so
-        auth       required                    pam_env.so
-        auth       [success=ok default=1]     ${pkgs.gdm}/lib/security/pam_gdm.so
-        auth       optional                    ${pkgs.gnome-keyring}/lib/security/pam_gnome_keyring.so
-        
-        account    include                     login
-        
-        password   required                    pam_deny.so
-        
-        session    include                     login
-        session    optional                    ${pkgs.gnome-keyring}/lib/security/pam_gnome_keyring.so auto_start
-      '';
-    };
+    # Use standard GDM fingerprint auth instead of custom service
+    gdm-password.fprintAuth = lib.mkForce true;
   };
   
   system.stateVersion = "25.05";
