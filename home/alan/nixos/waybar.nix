@@ -80,7 +80,7 @@
             default = ["🔇" "🔉" "🔊"];
           };
           tooltip-format = "{desc} - {volume}%";
-          on-click = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+          on-click = "${pkgs.bash}/bin/bash /home/alan/projects/nix/home/alan/assets/scripts/audio-switcher";
           on-click-right = "pavucontrol";
           on-scroll-up = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+";
           on-scroll-down = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";

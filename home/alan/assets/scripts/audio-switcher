@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# Audio device switcher for waybar
+# Opens audio-menu in a terminal window, similar to nmtui for network
+
+SCRIPT_PATH="/home/alan/projects/nix/home/alan/assets/scripts/audio-menu"
+
+# Make sure the script is executable
+chmod +x "$SCRIPT_PATH"
+
+# Use the same terminal as nmtui (likely alacritty or kitty)
+if command -v alacritty &> /dev/null; then
+    alacritty --title "Audio Manager" -e bash "$SCRIPT_PATH"
+elif command -v kitty &> /dev/null; then
+    kitty --title "Audio Manager" -e bash "$SCRIPT_PATH"
+elif command -v gnome-terminal &> /dev/null; then
+    gnome-terminal --title="Audio Manager" -- bash "$SCRIPT_PATH"
+else
+    # Fallback to xterm
+    xterm -T "Audio Manager" -e bash "$SCRIPT_PATH"
+fi
