@@ -39,14 +39,37 @@
     };
   };
 
+  # Configure 1Password browser support
   environment.etc = {
     "1password/custom_allowed_browsers" = {
       text = ''
         zen-bin
+        .zen-wrapped
+        zen
       '';
       mode = "0755";
     };
   };
+
+  # Enable 1Password browser extension support
+  environment.systemPackages = with pkgs; [
+    (writeShellScriptBin "setup-1password-zen" ''
+      # Create native messaging host symlinks for Zen browser
+      mkdir -p ~/.zen/native-messaging-hosts
+      
+      # Link 1Password native messaging host
+      if [ -f /etc/1password/com.1password.1password.json ]; then
+        ln -sf /etc/1password/com.1password.1password.json ~/.zen/native-messaging-hosts/
+      fi
+      
+      # Alternative locations
+      if [ -f /usr/lib/mozilla/native-messaging-hosts/com.1password.1password.json ]; then
+        ln -sf /usr/lib/mozilla/native-messaging-hosts/com.1password.1password.json ~/.zen/native-messaging-hosts/
+      fi
+      
+      echo "1Password native messaging host linked for Zen browser"
+    '')
+  ];
 
   services = {
     printing.enable = true;
