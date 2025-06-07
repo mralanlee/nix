@@ -96,9 +96,16 @@
     #     "default.clock.min-quantum" = 32;
     #   };
     # };
-    xserver.xkb = {
-      layout = "us";
-      variant = "";
+    xserver = {
+      xkb = {
+        layout = "us";
+        variant = "";
+      };
+      # Mirror macOS keyboard repeat settings
+      # macOS KeyRepeat 1 = ~30ms between repeats = ~33 repeats/sec
+      # macOS InitialKeyRepeat 15 = ~225ms delay = 225ms
+      autoRepeatDelay = 225;
+      autoRepeatInterval = 33;
     };
     tlp = {
       enable = true;
