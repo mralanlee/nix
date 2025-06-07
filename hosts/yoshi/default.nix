@@ -56,13 +56,13 @@
     '')
   ];
 
-  # Configure PAM for fingerprint authentication
+  # Configure PAM for fingerprint authentication (allows fingerprint OR password)
   security.pam.services = {
-    login.fprintAuth = lib.mkForce true;
-    sudo.fprintAuth = lib.mkForce true;
-    hyprlock.fprintAuth = lib.mkForce true;
-    # Use standard GDM fingerprint auth instead of custom service
-    gdm-password.fprintAuth = lib.mkForce true;
+    # Let GDM handle login authentication defaults
+    sudo.fprintAuth = true;   # Allow fingerprint OR password for sudo
+    hyprlock.fprintAuth = true;
+    # Enable fingerprint for GDM but allow password as fallback
+    gdm-password.fprintAuth = lib.mkDefault true;
   };
   
   system.stateVersion = "25.05";
