@@ -12,6 +12,9 @@
       gpg = {format = "ssh";};
       push = {autoSetupRemote = true;};
       pull = {rebase = true;};
+      credential = {
+        credentialStore = "none";
+      };
     };
     delta = {enable = false;};
     difftastic = {enable = true;};
