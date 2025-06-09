@@ -30,15 +30,14 @@
     # Store optimization
     optimise = {
       automatic = true;
-      dates = ["03:00"]; # Run at 3 AM
+      interval = [{ Hour = 3; Minute = 0; }];
     };
     
     # Garbage collection
     gc = {
       automatic = true;
-      dates = "weekly";
+      interval = { Weekday = 7; };
       options = "--delete-older-than 30d";
-      persistent = true;
     };
   };
 }

@@ -108,6 +108,7 @@
         system = "aarch64-darwin";
         modules = [
           ./hosts/drumwave
+          # sops-nix.nixosModules.sops
           home-manager.darwinModules.home-manager
           mac-app-util.darwinModules.default
           {

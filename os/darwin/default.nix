@@ -4,7 +4,7 @@
     ./homebrew.nix
     ./nix.nix
     ./packages.nix
-    ./sops.nix
+    # ./sops.nix
   ];
 
   system.primaryUser = "alan";
