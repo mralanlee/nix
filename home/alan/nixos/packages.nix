@@ -6,6 +6,8 @@
     hyprlock
     inputs.zen-browser.packages."${system}".twilight
     git-credential-manager
+
+    bluebubbles
     
     # waybar dependencies
     pavucontrol
