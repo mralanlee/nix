@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# Set plugin directory
+export PLUGIN_DIR="$CONFIG_DIR/plugins"
+
+# Load global styles, colors and icons
+source "$CONFIG_DIR/globalstyles.sh"
+
+# Unload the macOS on screen indicator overlay for volume and brightness
+launchctl unload -w /System/Library/LaunchAgents/com.apple.OSDUIHelper.plist > /dev/null 2>&1 &
+
+# Setting up the general bar appearance and default values
+sketchybar --bar height=35 \
+                 blur_radius=30 \
+                 position=top \
+                 padding_left=10 \
+                 padding_right=10 \
+                 color=$BAR_COLOR \
+                 corner_radius=12 \
+                 y_offset=8 \
+                 margin=10 \
+                 shadow=on
+
+sketchybar --default updates=when_shown \
+                     icon.font="$NERD_FONT:Bold:16.0" \
+                     icon.color=$ICON_COLOR \
+                     icon.highlight_color=$HIGHLIGHT_COLOR \
+                     label.font="$FONT:Medium:13.0" \
+                     label.color=$LABEL_COLOR \
+                     background.color=$ITEM_BG_COLOR \
+                     background.corner_radius=6 \
+                     background.height=26 \
+                     popup.background.border_width=2 \
+                     popup.background.corner_radius=8 \
+                     popup.background.border_color=$POPUP_BORDER_COLOR \
+                     popup.background.color=$POPUP_BG_COLOR \
+                     popup.blur_radius=20 \
+                     popup.background.shadow.drawing=on
+
+# Left side items
+source $CONFIG_DIR/items/spaces.sh
+
+# Right side items
+source $CONFIG_DIR/items/calendar.sh
+source $CONFIG_DIR/items/volume.sh
+source $CONFIG_DIR/items/battery.sh
+source $CONFIG_DIR/items/wifi.sh
+
+# Start workspace watcher in background
+$PLUGIN_DIR/workspace_watcher.sh &
+
+# Forcing all item scripts to run (never do this outside of sketchybarrc)
+sketchybar --update
+
+echo "sketchybar configuation loaded.."
