@@ -5,6 +5,7 @@
     ./nix.nix
     ./fonts.nix
     ./laptop.nix
+    ./sops.nix
   ];
 
   time.timeZone = "America/Los_Angeles";

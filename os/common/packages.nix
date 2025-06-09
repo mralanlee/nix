@@ -5,5 +5,6 @@
     google-chrome
     spicetify-cli
     sops
+    age
   ];
 }

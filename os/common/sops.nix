@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   # Sops configuration
-  sops.defaultSopsFile = ./secrets/secrets.yaml;
+
+  sops.defaultSopsFile = ../common/secrets/secrets.yaml;
   sops.defaultSopsFormat = "yaml";
   sops.age.keyFile = "/home/alan/.config/sops/age/keys.txt";
   
