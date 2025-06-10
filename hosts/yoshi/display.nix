@@ -44,18 +44,26 @@
         exit 0
       fi
       
-      # Check if external monitors are connected
-      EXTERNAL_MONITORS=$(hyprctl monitors -j | jq -r '.[] | select(.name != "eDP-1") | .name' | wc -l)
-      echo "$(date): External monitors detected: $EXTERNAL_MONITORS" >> /tmp/lid-handler.log
+      # Check current lid state
+      LID_STATE="open"
+      if [ -f /proc/acpi/button/lid/LID0/state ]; then
+        grep -q "closed" /proc/acpi/button/lid/LID0/state && LID_STATE="closed"
+      fi
       
-      if [ "$EXTERNAL_MONITORS" -gt 0 ]; then
-        # External monitor connected - don't suspend
-        echo "$(date): External monitor detected, not suspending" >> /tmp/lid-handler.log
-        exit 0
+      echo "$(date): Lid state: $LID_STATE" >> /tmp/lid-handler.log
+      
+      if [ "$LID_STATE" = "closed" ]; then
+        # Lid closed - turn off laptop display and disable fingerprint
+        echo "$(date): Lid closed, turning off laptop display and disabling fingerprint" >> /tmp/lid-handler.log
+        hyprctl keyword monitor "eDP-1,disable"
+        # Disable fingerprint reader
+        systemctl stop fprintd.service
       else
-        # No external monitor - suspend as normal
-        echo "$(date): No external monitor, suspending" >> /tmp/lid-handler.log
-        systemctl suspend
+        # Lid opened - turn on laptop display and enable fingerprint
+        echo "$(date): Lid opened, turning on laptop display and enabling fingerprint" >> /tmp/lid-handler.log
+        hyprctl keyword monitor "eDP-1,preferred,auto,1"
+        # Enable fingerprint reader
+        systemctl start fprintd.service
       fi
     '')
   ];
