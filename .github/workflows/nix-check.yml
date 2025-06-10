@@ -1,0 +1,50 @@
+name: Nix Checks
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  syntax-check:
+    name: Check Nix Syntax
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Install Nix
+      uses: cachix/install-nix-action@v24
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+        
+    - name: Check flake.nix syntax
+      run: nix flake check --no-build
+      
+    - name: Check all Nix files syntax
+      run: |
+        echo "Checking syntax of all Nix files..."
+        find . -name "*.nix" -type f | while read -r file; do
+          echo "Checking: $file"
+          nix-instantiate --parse "$file" >/dev/null || exit 1
+        done
+        echo "All files passed syntax check!"
+
+  format-check:
+    name: Check Nix Formatting
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Install Nix
+      uses: cachix/install-nix-action@v24
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+        
+    - name: Check formatting with alejandra
+      run: |
+        nix run nixpkgs#alejandra -- --check .
