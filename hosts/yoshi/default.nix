@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   lib,
   ...
@@ -56,13 +57,34 @@
     '')
   ];
 
-  # Configure PAM for fingerprint authentication (allows fingerprint OR password)
+  # Configure PAM for fingerprint authentication
   security.pam.services = {
-    # Let GDM handle login authentication defaults
+    login.fprintAuth = false;  # Disable for login to prevent conflicts
     sudo.fprintAuth = true;   # Allow fingerprint OR password for sudo
     hyprlock.fprintAuth = true;
-    # Enable fingerprint for GDM but allow password as fallback
-    gdm-password.fprintAuth = lib.mkDefault true;
+    gdm.fprintAuth = false;  # Disable default gdm fingerprint
+    gdm-password.fprintAuth = false;  # Disable to use custom config
+    
+    # Custom GDM fingerprint service to fix the immediate error message
+    gdm-fingerprint = lib.mkIf config.services.fprintd.enable {
+      text = ''
+        auth       required                    pam_shells.so
+        auth       requisite                   pam_nologin.so
+        auth       requisite                   pam_faillock.so      preauth
+        auth       required                    ${pkgs.fprintd}/lib/security/pam_fprintd.so
+        auth       optional                    pam_permit.so
+        auth       required                    pam_env.so
+        auth       [success=ok default=1]      ${pkgs.gdm}/lib/security/pam_gdm.so
+        auth       optional                    ${pkgs.gnome-keyring}/lib/security/pam_gnome_keyring.so
+        
+        account    include                     login
+        
+        password   required                    pam_deny.so
+        
+        session    include                     login
+        session    optional                    ${pkgs.gnome-keyring}/lib/security/pam_gnome_keyring.so auto_start
+      '';
+    };
   };
   
   system.stateVersion = "25.05";
