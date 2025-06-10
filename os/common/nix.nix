@@ -26,18 +26,5 @@
     };
 
     channel.enable = true;
-
-    # Store optimization
-    optimise = {
-      automatic = true;
-      interval = [{ Hour = 3; Minute = 0; }];
-    };
-    
-    # Garbage collection
-    gc = {
-      automatic = true;
-      interval = { Weekday = 7; };
-      options = "--delete-older-than 30d";
-    };
   };
 }
