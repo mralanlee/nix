@@ -40,6 +40,7 @@
           # complete -F __start_kubectl k
         fi
 
+        export PATH="/run/current-system/sw/bin:$PATH"
         export PATH=$PATH:/Users/alan/.spicetify
         eval "$(/Users/alan/.local/bin/mise activate zsh)"
         eval "$(~/.local/bin/mise activate zsh)"
