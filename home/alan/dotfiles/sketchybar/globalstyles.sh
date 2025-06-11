@@ -13,7 +13,7 @@ export GREY=0xff565f89
 export TRANSPARENT=0x00000000
 
 # General bar colors
-export BAR_COLOR=0xd9120c19      # rgba(18, 12, 25, 0.85)
+export BAR_COLOR=0xbf120c19      # rgba(18, 12, 25, 0.75)
 export ICON_COLOR=$WHITE          # rgba(230, 220, 255, 0.9)  
 export LABEL_COLOR=$WHITE         # rgba(230, 220, 255, 0.9)
 export BACKGROUND_1=0xff2a2e36

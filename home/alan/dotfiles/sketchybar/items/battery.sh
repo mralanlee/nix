@@ -11,4 +11,4 @@ sketchybar --add item battery right \
                         background.padding_right=4 \
                         icon.padding_left=8 \
                         label.padding_right=8 \
-           --subscribe battery system_woke power_source_change
+           --subscribe battery system_woke power_source_change mouse.entered mouse.exited

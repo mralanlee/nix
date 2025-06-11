@@ -30,16 +30,19 @@
     PLUGIN_DIR = "$HOME/.config/sketchybar/plugins";
   };
 
-  # LaunchAgent for auto-starting SketchyBar (disabled for now)
-  # launchd.agents.sketchybar = {
-  #   enable = true;
-  #   config = {
-  #     ProgramArguments = [ "/bin/bash" "/Users/alan/.config/sketchybar/start_sketchybar.sh" ];
-  #     Label = "com.user.sketchybar";
-  #     RunAtLoad = true;
-  #     KeepAlive = true;
-  #     StandardOutPath = "/tmp/sketchybar.log";
-  #     StandardErrorPath = "/tmp/sketchybar.error.log";
-  #   };
-  # };
+  # LaunchAgent for auto-starting SketchyBar
+  launchd.agents.sketchybar = {
+    enable = true;
+    config = {
+      ProgramArguments = [ "/bin/bash" "/Users/alan/.config/sketchybar/start_sketchybar.sh" ];
+      Label = "com.user.sketchybar";
+      RunAtLoad = true;
+      KeepAlive = true;
+      StandardOutPath = "/tmp/sketchybar.log";
+      StandardErrorPath = "/tmp/sketchybar.error.log";
+      EnvironmentVariables = {
+        PATH = "/run/current-system/sw/bin:/usr/local/bin:/usr/bin:/bin";
+      };
+    };
+  };
 }

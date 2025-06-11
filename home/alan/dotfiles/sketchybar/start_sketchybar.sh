@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo "[$(date)] Starting sketchybar..."
 export CONFIG_DIR="$HOME/.config/sketchybar"
 export PLUGIN_DIR="$HOME/.config/sketchybar/plugins"
 
