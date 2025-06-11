@@ -1,5 +1,6 @@
 {
   imports = [
+    ./alacritty.nix
     ./cli.nix
     ./git.nix
     ./home.nix
