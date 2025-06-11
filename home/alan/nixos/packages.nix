@@ -1,4 +1,9 @@
-{pkgs, inputs, system, ...}: {
+{
+  pkgs,
+  inputs,
+  system,
+  ...
+}: {
   home.packages = with pkgs; [
     obsidian
     hyprpaper
@@ -8,16 +13,16 @@
     git-credential-manager
 
     bluebubbles
-    
+
     # waybar dependencies
     pavucontrol
-    networkmanagerapplet  # provides nm-connection-editor
-    networkmanager  # provides nmtui for terminal-based network management
-    gnome-power-manager  # provides gnome-power-statistics
-    wireplumber  # provides wpctl for audio controls
-    
+    networkmanagerapplet # provides nm-connection-editor
+    networkmanager # provides nmtui for terminal-based network management
+    gnome-power-manager # provides gnome-power-statistics
+    wireplumber # provides wpctl for audio controls
+
     # function key support
-    brightnessctl  # brightness controls for Framework laptop
-    playerctl  # media controls
+    brightnessctl # brightness controls for Framework laptop
+    playerctl # media controls
   ];
 }

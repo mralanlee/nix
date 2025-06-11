@@ -5,7 +5,7 @@
 
   sops.defaultSopsFile = ../common/secrets/secrets.yaml;
   sops.defaultSopsFormat = "yaml";
-  
+
   sops.secrets.github_token = {
     owner = "alan";
     group = "users";

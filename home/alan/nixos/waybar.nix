@@ -13,11 +13,11 @@
         margin-top = 8;
         margin-left = 10;
         margin-right = 10;
-        
+
         modules-left = ["hyprland/workspaces"];
         modules-center = ["clock"];
         modules-right = ["tray" "battery" "pulseaudio" "network"];
-        
+
         "hyprland/workspaces" = {
           disable-scroll = true;
           all-outputs = true;
@@ -27,17 +27,17 @@
           };
           on-click = "activate";
         };
-        
+
         tray = {
           spacing = 8;
           icon-size = 16;
         };
-        
+
         clock = {
           format = "{:%a %b %d  %I:%M %p}";
           tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
         };
-        
+
         battery = {
           states = {
             good = 95;
@@ -51,7 +51,7 @@
           tooltip-format = "{capacity}% - {timeTo} ⚡ {power}W";
           on-click = "gnome-power-statistics";
         };
-        
+
         network = {
           format-wifi = "📶";
           format-ethernet = "🌐";
@@ -64,7 +64,7 @@
           on-click = "nmtui";
           on-click-right = "nm-connection-editor";
         };
-        
+
         pulseaudio = {
           format = "{icon}";
           format-bluetooth = "🎧";
@@ -85,10 +85,9 @@
           on-scroll-up = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+";
           on-scroll-down = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
         };
-        
       };
     };
-    
+
     style = ''
       * {
         font-family: "JetBrainsMono Nerd Font", "FiraCode Nerd Font", -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;

@@ -72,7 +72,7 @@
         "qf" = "find. -type f | fzf";
         "docker" = "podman";
         "k" = "kubectl";
-        "kcm" ="kubectl kc";
+        "kcm" = "kubectl kc";
         "l" = "eza";
         "la" = "eza -a";
         "ls" = "eza --icons --color=auto";

@@ -10,7 +10,7 @@
       cleanup = "zap";
     };
     taps = [
-      { name = "nikitabobko/homebrew-tap"; }
+      {name = "nikitabobko/homebrew-tap";}
     ];
 
     casks = [

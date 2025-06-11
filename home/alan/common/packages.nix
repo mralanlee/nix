@@ -3,7 +3,7 @@
     # fonts
     nerd-fonts.fira-code
     nerd-fonts.jetbrains-mono
-    
+
     awscli2
     fd
     htop
@@ -44,7 +44,7 @@
     # terraform
     terraform-docs
     terraform
-    tgswitch 
+    tgswitch
     hclfmt
     # terraform-ls moved to neovim config
   ];

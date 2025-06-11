@@ -15,7 +15,8 @@
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "en_US.UTF-8";
     LC_IDENTIFICATION = "en_US.UTF-8";
-    LC_MEASUREMENT = "en_US.UTF-8"; LC_MONETARY = "en_US.UTF-8";
+    LC_MEASUREMENT = "en_US.UTF-8";
+    LC_MONETARY = "en_US.UTF-8";
     LC_NAME = "en_US.UTF-8";
     LC_NUMERIC = "en_US.UTF-8";
     LC_PAPER = "en_US.UTF-8";
@@ -28,7 +29,6 @@
     support32Bit = true;
   };
 
-  
   programs = {
     _1password = {
       enable = true;
@@ -57,17 +57,17 @@
     (writeShellScriptBin "setup-1password-zen" ''
       # Create native messaging host symlinks for Zen browser
       mkdir -p ~/.zen/native-messaging-hosts
-      
+
       # Link 1Password native messaging host
       if [ -f /etc/1password/com.1password.1password.json ]; then
         ln -sf /etc/1password/com.1password.1password.json ~/.zen/native-messaging-hosts/
       fi
-      
+
       # Alternative locations
       if [ -f /usr/lib/mozilla/native-messaging-hosts/com.1password.1password.json ]; then
         ln -sf /usr/lib/mozilla/native-messaging-hosts/com.1password.1password.json ~/.zen/native-messaging-hosts/
       fi
-      
+
       echo "1Password native messaging host linked for Zen browser"
     '')
   ];
@@ -125,7 +125,7 @@
   hardware.bluetooth.powerOnBoot = true;
   hardware.bluetooth.settings = {
     General = {
-    	Experimental = true;
+      Experimental = true;
     };
   };
 
@@ -136,22 +136,21 @@
   hardware = {
     graphics.enable = true;
     enableAllFirmware = true;
-    firmware = [ pkgs.firmwareLinuxNonfree ];
+    firmware = [pkgs.firmwareLinuxNonfree];
   };
 
   users.users.alan = {
     isNormalUser = true;
     description = "alan";
     ignoreShellProgramCheck = true;
-    extraGroups = [ "networkmanager" "wheel" "audio" "video" ];
+    extraGroups = ["networkmanager" "wheel" "audio" "video"];
     shell = pkgs.zsh;
   };
 
   xdg.portal = {
     enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-hyprland ];
+    extraPortals = [pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-hyprland];
   };
-
 
   environment.variables = {
     SYSTEMD_EDITOR = "nvim";

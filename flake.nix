@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-    sops-nix.url = "github:Mic92/sops-nix"; 
+    sops-nix.url = "github:Mic92/sops-nix";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -37,9 +37,9 @@
     };
   };
 
-  outputs = { 
-    self, 
-    nixpkgs, 
+  outputs = {
+    self,
+    nixpkgs,
     nixos-hardware,
     sops-nix,
     home-manager,
@@ -50,13 +50,13 @@
     homebrew-cask,
     mac-app-util,
     aerospace-tap,
-    ... 
+    ...
   } @ inputs: let
     forAllSystems = nixpkgs.lib.genAttrs [
       "x86_64-linux"
       "aarch64-linux"
       "aarch64-darwin"
-    ]; 
+    ];
   in rec {
     formatter = forAllSystems (
       system: nixpkgs.legacyPackages.${system}.alejandra
@@ -65,7 +65,7 @@
     nixosConfigurations = {
       shimmer = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
+        specialArgs = {inherit inputs;};
         modules = [
           ./hosts/shimmer
           home-manager.nixosModules.home-manager
@@ -74,16 +74,19 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.alan.imports = [
-                ./home/alan/nixos
+              ./home/alan/nixos
             ]; # this will be nixos config
-            home-manager.extraSpecialArgs = { inherit inputs; system = "x86_64-linux"; };
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              system = "x86_64-linux";
+            };
           }
         ];
       };
 
       yoshi = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
+        specialArgs = {inherit inputs;};
         modules = [
           ./hosts/yoshi
           home-manager.nixosModules.home-manager
@@ -95,9 +98,12 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.alan.imports = [
-                ./home/alan/nixos
+              ./home/alan/nixos
             ]; # this will be nixos config
-            home-manager.extraSpecialArgs = { inherit inputs; system = "x86_64-linux"; };
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              system = "x86_64-linux";
+            };
           }
         ];
       };

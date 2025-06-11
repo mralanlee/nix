@@ -23,7 +23,7 @@
     vpl-gpu-rt
   ];
 
-  services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
+  services.xserver.videoDrivers = ["displaylink" "modesetting"];
 
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="usb", TEST=="power/control", ATTR{power/control}="on"

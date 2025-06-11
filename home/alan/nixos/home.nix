@@ -1,23 +1,27 @@
-{ config, pkgs, ... }: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   home.file = {
     ".config/nvim" = {
-        source =  ../dotfiles/nvim;
-        recursive = true;
+      source = ../dotfiles/nvim;
+      recursive = true;
     };
-    
+
     ".config/hypr" = {
-        source =  ../dotfiles/hypr;
-        recursive = true;
+      source = ../dotfiles/hypr;
+      recursive = true;
     };
 
     ".config/gdm" = {
-        source =  ../dotfiles/gdm;
-        recursive = true;
+      source = ../dotfiles/gdm;
+      recursive = true;
     };
-    
+
     # Additional monitor config for lid-closed scenarios
     ".config/gdm/monitors-lid-closed.xml" = {
-        source = ../dotfiles/gdm/monitors-lid-closed.xml;
+      source = ../dotfiles/gdm/monitors-lid-closed.xml;
     };
   };
 }

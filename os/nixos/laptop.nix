@@ -1,11 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.hardware.laptop;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.hardware.laptop;
+in {
   options.hardware.laptop = {
     enable = mkEnableOption "laptop-specific power management";
   };
@@ -33,7 +34,7 @@ in
 
     # Disable NetworkManager wait-online service to speed up resume
     systemd.services.NetworkManager-wait-online.enable = false;
-    
+
     # Reduce systemd timeout for faster resume
     systemd.extraConfig = ''
       DefaultTimeoutStopSec=10s
@@ -59,8 +60,8 @@ in
     # Lock screen before suspend
     systemd.services."lock-on-suspend" = {
       description = "Lock screen before suspend";
-      wantedBy = [ "suspend.target" "hibernate.target" "hybrid-sleep.target" ];
-      before = [ "suspend.target" "hibernate.target" "hybrid-sleep.target" ];
+      wantedBy = ["suspend.target" "hibernate.target" "hybrid-sleep.target"];
+      before = ["suspend.target" "hibernate.target" "hybrid-sleep.target"];
       serviceConfig = {
         Type = "forking";
         User = "alan";
@@ -78,7 +79,7 @@ in
     services.udev.extraRules = ''
       # Disable runtime PM for NVMe
       ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x144d", ATTR{class}=="0x010802", ATTR{power/control}="on"
-      
+
       # Disable USB autosuspend for specific devices that cause delays
       ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="32ac", ATTR{idProduct}=="0012", ATTR{power/control}="on"
       ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="32ac", ATTR{idProduct}=="0014", ATTR{power/control}="on"

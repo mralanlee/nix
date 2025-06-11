@@ -14,14 +14,13 @@
     # clipboard
     wl-clipboard
     cliphist
-    
+
     # system
     wayshot
     swappy
     swww
 
-    nautilus  
-
+    nautilus
 
     # wayland specific
     wayland
