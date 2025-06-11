@@ -3,5 +3,6 @@
     sketchybar
     jankyborders
     skhd
+    aerospace
   ];
 }

@@ -16,7 +16,6 @@
     casks = [
       "1password"
       "1password-cli"
-      "aerospace"
       "betterdisplay"
       "karabiner-elements"
       "sf-symbols"
