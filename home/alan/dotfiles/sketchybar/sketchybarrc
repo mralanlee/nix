@@ -37,17 +37,20 @@ sketchybar --default updates=when_shown \
                      popup.blur_radius=20 \
                      popup.background.shadow.drawing=on
 
+# Add aerospace workspace change event
+sketchybar --add event aerospace_workspace_change
+
 # Left side items
 source $CONFIG_DIR/items/spaces.sh
 
 # Right side items
 source $CONFIG_DIR/items/calendar.sh
+source $CONFIG_DIR/items/memory.sh
 source $CONFIG_DIR/items/volume.sh
 source $CONFIG_DIR/items/battery.sh
 source $CONFIG_DIR/items/wifi.sh
 
-# Start workspace watcher in background
-$PLUGIN_DIR/workspace_watcher.sh &
+# Workspace changes are now handled by aerospace directly
 
 # Forcing all item scripts to run (never do this outside of sketchybarrc)
 sketchybar --update

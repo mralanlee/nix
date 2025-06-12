@@ -22,6 +22,9 @@
       };
 
       initContent = ''
+        # ssh-agent setup
+        ssh-add --apple-use-keychain ~/.ssh/id_ed25519 2>/dev/null
+
         # tmux autostart
         export ZSH_TMUX_AUTOSTART=true
         if [ "$TMUX" = "" ]; then tmux; fi
