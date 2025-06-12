@@ -26,6 +26,7 @@
     lua
     zed-editor
     aider-chat-full
+    uv
 
     # for anyone reading this, I haven't gone soft.
     # I'm using this to get a github token because Travis told me to
