@@ -8,21 +8,21 @@ do
   
   sketchybar --add space space.$sid left \
              --set space.$sid space=$sid \
-                              icon=$sid \
+                              icon="" \
                               label.drawing=off \
                               click_script="aerospace workspace $sid" \
                               background.color=$ITEM_BG_COLOR \
-                              background.corner_radius=6 \
-                              background.height=26 \
-                              background.border_width=1 \
-                              background.border_color=$ITEM_BORDER_COLOR \
-                              background.padding_left=2 \
-                              background.padding_right=2 \
-                              icon.color=$ICON_COLOR \
-                              icon.highlight_color=$HIGHLIGHT_COLOR \
-                              icon.font="$NERD_FONT:Bold:14.0" \
-                              icon.padding_left=8 \
-                              icon.padding_right=8
+                              background.corner_radius=10 \
+                              background.height=12 \
+                              background.border_width=0 \
+                              background.padding_left=3 \
+                              background.padding_right=3 \
+                              icon.background.color=$ICON_COLOR \
+                              icon.background.height=8 \
+                              icon.background.corner_radius=8 \
+                              icon.background.drawing=on \
+                              icon.padding_left=4 \
+                              icon.padding_right=4
 done
 
 sketchybar --add item space_separator left \
