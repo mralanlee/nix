@@ -17,6 +17,7 @@
       "1password"
       "1password-cli"
       "betterdisplay"
+      "claude"
       "karabiner-elements"
       "sf-symbols"
       "font-sf-mono"
