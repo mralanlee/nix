@@ -40,8 +40,34 @@ sketchybar --default updates=when_shown \
 # Add aerospace workspace change event
 sketchybar --add event aerospace_workspace_change
 
-# Left side items
-source $CONFIG_DIR/items/spaces.sh
+# Workspace setup exactly like pasted configuration
+no_margin=(
+  icon.padding_left=0
+  icon.padding_right=0
+  label.padding_left=0
+  label.padding_right=0
+)
+
+SPACE_ICONS=("1" "2" "3" "4" "5")
+
+for i in "${!SPACE_ICONS[@]}"
+do
+  sid="$(($i+1))"
+  aero=(
+    script="$PLUGIN_DIR/space.sh"
+    click_script="aerospace workspace $sid"
+    icon.background.color="$ICON_COLOR"
+    icon.background.height=10
+    icon.background.corner_radius=10
+    "${no_margin[@]}"
+    icon.padding_right=5
+    icon.padding_left=5
+  )
+
+  sketchybar --add item aerospace."$sid" left \
+             --set aerospace."$sid" "${aero[@]}" \
+             --subscribe aerospace."$sid" aerospace_workspace_change
+done
 
 # Right side items
 source $CONFIG_DIR/items/calendar.sh
@@ -50,7 +76,7 @@ source $CONFIG_DIR/items/volume.sh
 source $CONFIG_DIR/items/battery.sh
 source $CONFIG_DIR/items/wifi.sh
 
-# Workspace changes are now handled by aerospace directly
+# Workspace changes handled by aerospace callbacks
 
 # Forcing all item scripts to run (never do this outside of sketchybarrc)
 sketchybar --update
