@@ -66,6 +66,7 @@
         };
 
         pulseaudio = {
+          scroll-step = 5;
           format = "{icon}";
           format-bluetooth = "🎧";
           format-bluetooth-muted = "🔇";
@@ -79,11 +80,10 @@
             car = "🚗";
             default = ["🔇" "🔉" "🔊"];
           };
-          tooltip-format = "{desc} - {volume}%";
-          on-click = "${pkgs.bash}/bin/bash /home/alan/projects/nix/home/alan/assets/scripts/audio-switcher";
-          on-click-right = "pavucontrol";
-          on-scroll-up = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+";
-          on-scroll-down = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
+          tooltip-format = "{volume}% volume";
+          on-click = "pactl set-sink-mute @DEFAULT_SINK@ toggle";
+          on-scroll-up = "pactl set-sink-volume @DEFAULT_SINK@ +5%";
+          on-scroll-down = "pactl set-sink-volume @DEFAULT_SINK@ -5%";
         };
       };
     };
