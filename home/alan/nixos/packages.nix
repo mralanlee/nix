@@ -9,6 +9,7 @@
     hyprpaper
     rofi
     hyprlock
+    hypridle
     inputs.zen-browser.packages."${system}".twilight
     git-credential-manager
 
