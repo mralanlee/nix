@@ -30,6 +30,7 @@
 
   # Enable fingerprint reader support
   services.fprintd.enable = true;
+  
 
   # Add user to required groups for fingerprint access
   users.users.alan.extraGroups = ["wheel" "audio" "video" "networkmanager" "plugdev"];
@@ -60,31 +61,10 @@
   # Configure PAM for fingerprint authentication
   security.pam.services = {
     login.fprintAuth = false; # Disable for login to prevent conflicts
-    sudo.fprintAuth = true; # Allow fingerprint OR password for sudo
-    hyprlock.fprintAuth = true;
-    gdm.fprintAuth = false; # Disable default gdm fingerprint
-    gdm-password.fprintAuth = false; # Disable to use custom config
-
-    # Custom GDM fingerprint service to fix the immediate error message
-    gdm-fingerprint = lib.mkIf config.services.fprintd.enable {
-      text = ''
-        auth       required                    pam_shells.so
-        auth       requisite                   pam_nologin.so
-        auth       requisite                   pam_faillock.so      preauth
-        auth       required                    ${pkgs.fprintd}/lib/security/pam_fprintd.so
-        auth       optional                    pam_permit.so
-        auth       required                    pam_env.so
-        auth       [success=ok default=1]      ${pkgs.gdm}/lib/security/pam_gdm.so
-        auth       optional                    ${pkgs.gnome-keyring}/lib/security/pam_gnome_keyring.so
-
-        account    include                     login
-
-        password   required                    pam_deny.so
-
-        session    include                     login
-        session    optional                    ${pkgs.gnome-keyring}/lib/security/pam_gnome_keyring.so auto_start
-      '';
-    };
+    sudo.fprintAuth = lib.mkDefault true; # Allow fingerprint OR password for sudo (with fallback)
+    hyprlock.fprintAuth = lib.mkDefault true;
+    gdm.fprintAuth = false; # Keep disabled to avoid breaking basic auth
+    gdm-password.fprintAuth = false; # Keep disabled to avoid breaking basic auth
   };
 
   system.stateVersion = "25.05";
