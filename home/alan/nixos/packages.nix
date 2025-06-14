@@ -14,6 +14,7 @@
     git-credential-manager
 
     bluebubbles
+    railway
 
     # waybar dependencies
     pavucontrol
