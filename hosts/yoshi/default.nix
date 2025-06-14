@@ -30,7 +30,6 @@
 
   # Enable fingerprint reader support
   services.fprintd.enable = true;
-  
 
   # Add user to required groups for fingerprint access
   users.users.alan.extraGroups = ["wheel" "audio" "video" "networkmanager" "plugdev"];
