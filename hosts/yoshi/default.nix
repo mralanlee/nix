@@ -62,7 +62,9 @@
   security.pam.services = {
     login.fprintAuth = false; # Disable for login to prevent conflicts
     sudo.fprintAuth = lib.mkDefault true; # Allow fingerprint OR password for sudo (with fallback)
-    hyprlock.fprintAuth = lib.mkDefault true;
+    hyprlock = {
+      fprintAuth = false; # Disable fingerprint authentication for hyprlock
+    };
     gdm.fprintAuth = false; # Keep disabled to avoid breaking basic auth
     gdm-password.fprintAuth = false; # Keep disabled to avoid breaking basic auth
   };
