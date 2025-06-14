@@ -16,6 +16,9 @@
     signal-desktop-bin
     discord
 
+    # media
+    spotify
+
     # developer tools
     mise
     devbox
