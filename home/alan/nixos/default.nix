@@ -5,6 +5,7 @@
     ./home.nix
     ./mako.nix
     ./packages.nix
+    ./shell.nix
     ./waybar.nix
   ];
 }
