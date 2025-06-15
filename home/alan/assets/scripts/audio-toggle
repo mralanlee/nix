@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+# Audio Device Toggle for Waybar
+# Cycles through available audio output devices
+
+# Get all available sinks from wpctl status
+sinks=$(wpctl status | sed -n '/Sinks:/,/Sources:/p' | grep -E '^\s*│\s*\*?\s*[0-9]+\.' | sed 's/^\s*│\s*//')
+
+# Get current default sink ID
+current_sink=$(echo "$sinks" | grep '^\*' | sed 's/^\*\s*//' | cut -d. -f1)
+
+# Parse sinks into arrays
+declare -a sink_ids
+declare -a sink_names
+
+while IFS= read -r line; do
+    if [[ -n "$line" ]]; then
+        # Remove the * marker if present
+        clean_line=$(echo "$line" | sed 's/^\*\s*//')
+        id=$(echo "$clean_line" | cut -d. -f1)
+        # Extract name before [vol: info
+        name=$(echo "$clean_line" | cut -d. -f2- | sed 's/^\s*//' | sed 's/\s*\[vol:.*$//')
+        sink_ids+=("$id")
+        sink_names+=("$name")
+    fi
+done <<< "$sinks"
+
+# Find current sink index
+current_index=-1
+for i in "${!sink_ids[@]}"; do
+    if [[ "${sink_ids[$i]}" == "$current_sink" ]]; then
+        current_index=$i
+        break
+    fi
+done
+
+# Calculate next sink index (cycle through)
+if [[ $current_index -eq -1 ]]; then
+    next_index=0
+else
+    next_index=$(( (current_index + 1) % ${#sink_ids[@]} ))
+fi
+
+# Switch to next sink
+next_sink_id="${sink_ids[$next_index]}"
+next_sink_name="${sink_names[$next_index]}"
+
+wpctl set-default "$next_sink_id"
+
+# Show notification
+notify-send "Audio Output" "Switched to: $next_sink_name" -t 2000 -i audio-volume-high
+
+echo "Switched to: $next_sink_name (ID: $next_sink_id)"

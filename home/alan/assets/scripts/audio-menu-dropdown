@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+# Audio Device Dropdown Menu for Waybar
+# Shows a dropdown menu to select audio output device
+
+# Get all available sinks
+sinks=$(wpctl status | sed -n '/Sinks:/,/Sources:/p' | grep -E '^\s*│\s*\*?\s*[0-9]+\.' | sed 's/^\s*│\s*//')
+
+# Get current default sink ID
+current_sink=$(echo "$sinks" | grep '^\*' | sed 's/^\*\s*//' | cut -d. -f1)
+
+# Build menu options
+menu_options=""
+declare -A sink_map
+
+while IFS= read -r line; do
+    if [[ -n "$line" ]]; then
+        clean_line=$(echo "$line" | sed 's/^\*\s*//')
+        id=$(echo "$clean_line" | cut -d. -f1)
+        name=$(echo "$clean_line" | cut -d. -f2- | sed 's/^\s*//' | sed 's/\s*\[vol:.*$//')
+        
+        # Mark current device
+        if [[ "$id" == "$current_sink" ]]; then
+            menu_options+="🔊 $name\n"
+        else
+            menu_options+="   $name\n"
+        fi
+        
+        sink_map["$name"]="$id"
+        sink_map["🔊 $name"]="$id"
+    fi
+done <<< "$sinks"
+
+# Show menu with wofi (or fallback to rofi)
+if command -v wofi &> /dev/null; then
+    selected=$(echo -e "$menu_options" | wofi --dmenu --prompt "Audio Output" --width 400 --height 200)
+elif command -v rofi &> /dev/null; then
+    selected=$(echo -e "$menu_options" | rofi -dmenu -p "Audio Output" -theme "$HOME/.config/rofi/material-theme.rasi")
+else
+    notify-send "Error" "Neither wofi nor rofi found" -t 3000
+    exit 1
+fi
+
+# Switch to selected device
+if [[ -n "$selected" ]]; then
+    selected_id="${sink_map[$selected]}"
+    if [[ -n "$selected_id" ]]; then
+        wpctl set-default "$selected_id"
+        clean_name=$(echo "$selected" | sed 's/^🔊 //' | sed 's/^   //')
+        notify-send "Audio Output" "Switched to: $clean_name" -t 2000 -i audio-volume-high
+    fi
+fi
