@@ -10,5 +10,9 @@
 
     dig
     dnsutils
+    
+    # clipboard
+    wl-clipboard
+    xclip
   ];
 }

@@ -15,6 +15,7 @@
 
     bluebubbles
     railway
+    deno
 
     # waybar dependencies
     pavucontrol

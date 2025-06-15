@@ -24,10 +24,7 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  services.pulseaudio = {
-    enable = true;
-    support32Bit = true;
-  };
+  services.pulseaudio.enable = false;
 
   # Fix choppy text and scaling in 1Password on Wayland
   nixpkgs.overlays = [
@@ -37,7 +34,7 @@
           (oldAttrs.postInstall or "")
           + ''
             substituteInPlace $out/share/applications/1password.desktop \
-              --replace "Exec=1password" "Exec=1password --force-device-scale-factor=1.0 --high-dpi-support=1 --enable-features=UseOzonePlatform --ozone-platform=wayland"
+              --replace "Exec=1password" "Exec=1password --force-device-scale-factor=1.0 --high-dpi-support=1 --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland --enable-wayland-ime"
           '';
       });
     })
@@ -91,26 +88,14 @@
     openssh.enable = true;
     dbus.enable = true;
     gvfs.enable = true;
-    pipewire.enable = false;
-    # pipewire = {
-    #   enable = true;
-    #   alsa.enable = true;
-    #   alsa.support32Bit = true;
-    #   pulse.enable = true;
-    #   jack.enable = true;
-    #   wireplumber.enable = true;
-    #   wireplumber.extraConfig = {};
-    #
-    #   extraConfig.pipewire = {
-    #     "default.rt.prio" = 88;
-    #     "default.rt.time.soft" = 200000;
-    #     "default.rt.time.hard" = 300000;
-    #     "nice.level" = -15;
-    #     "default.clock.rate" = 48000;
-    #     "default.clock.quantum" = 1024;
-    #     "default.clock.min-quantum" = 32;
-    #   };
-    # };
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+      jack.enable = true;
+      wireplumber.enable = true;
+    };
     xserver = {
       xkb = {
         layout = "us";

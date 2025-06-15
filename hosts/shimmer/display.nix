@@ -2,8 +2,6 @@
   services.xserver = {
     enable = true;
     displayManager = {
-      defaultSession = "hyprland";
-
       gdm = {
         enable = true;
         settings = {
@@ -12,8 +10,9 @@
         wayland = true;
       };
     };
-    windowManager.hypr.enable = true;
   };
+
+  services.displayManager.defaultSession = "hyprland";
 
   programs.hyprland = {
     enable = true;
@@ -22,5 +21,8 @@
     };
   };
 
-  environment.etc."gdm/monitors.xml".source = "${config.users.users.alan.home}/config/gdm/monitors.xml";
+  # Copy GDM monitor configuration for external monitor support
+  systemd.tmpfiles.rules = [
+    "L+ /run/gdm/.config/monitors.xml - - - - ${../../home/alan/dotfiles/gdm/monitors.xml}"
+  ];
 }

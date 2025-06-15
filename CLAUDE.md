@@ -85,3 +85,43 @@ To add a new host:
 - **Terminal**: Tmux with auto-start, Alacritty
 - **Package Management**: Nix, Homebrew (macOS), mise
 - **Security**: 1Password integration, sops-nix for secrets
+
+## Recent Changes & Troubleshooting
+
+### PipeWire Audio Configuration (Current Issue)
+
+**Issue**: Waybar volume controls not working after switching to PipeWire from PulseAudio.
+
+**Current Status**: 
+- PipeWire is properly configured in `os/nixos/default.nix` with pulse compatibility enabled
+- Waybar configuration updated to use `wpctl` commands instead of `pactl`
+- User is in audio group and rtkit is enabled
+
+**Changes Made**:
+1. Updated waybar pulseaudio module in `home/alan/nixos/waybar.nix`:
+   - `on-click`: `wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle`
+   - `on-scroll-up`: `wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+`
+   - `on-scroll-down`: `wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-`
+
+**Next Steps**:
+- Rebuild system configuration: `sudo nixos-rebuild switch --flake .#<hostname>`
+- Restart or logout/login to ensure audio services start correctly
+- Test volume controls in waybar (click to mute/unmute, scroll to adjust volume)
+
+**Troubleshooting Commands**:
+```bash
+# Check if wpctl is working
+wpctl status
+
+# Check PipeWire services
+systemctl --user status pipewire pipewire-session-manager
+
+# Check audio devices
+wpctl list-sinks
+
+# Manual volume control test
+wpctl set-volume @DEFAULT_AUDIO_SINK@ 50%
+wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+```
+
+**Alternative Approach**: If `wpctl` doesn't work, revert to `pactl` commands with pipewire-pulse compatibility layer.
