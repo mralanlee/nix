@@ -92,10 +92,7 @@ in {
     '';
 
     # Ensure screen locks when suspending
-    services.xserver.displayManager.gdm.settings = {
-      daemon.AutomaticLoginEnable = false;
-      daemon.TimedLoginEnable = false;
-    };
+    # Note: Auto-login settings are handled per-host in display.nix
 
   };
 }
