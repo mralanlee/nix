@@ -23,5 +23,9 @@
     ".config/gdm/monitors-lid-closed.xml" = {
       source = ../dotfiles/gdm/monitors-lid-closed.xml;
     };
+
+    ".config/rofi/material-theme.rasi" = {
+      source = ../dotfiles/rofi/material-theme.rasi;
+    };
   };
 }

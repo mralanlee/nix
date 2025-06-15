@@ -16,7 +16,7 @@
 
         modules-left = ["hyprland/workspaces"];
         modules-center = ["clock"];
-        modules-right = ["tray" "battery" "pulseaudio" "network"];
+        modules-right = ["tray" "battery" "wireplumber" "wireplumber#microphone" "network"];
 
         "hyprland/workspaces" = {
           disable-scroll = true;
@@ -65,25 +65,27 @@
           on-click-right = "nm-connection-editor";
         };
 
-        pulseaudio = {
+        wireplumber = {
           scroll-step = 5;
           format = "{icon}";
-          format-bluetooth = "🎧";
-          format-bluetooth-muted = "🔇";
           format-muted = "🔇";
-          format-icons = {
-            headphone = "🎧";
-            hands-free = "🎧";
-            headset = "🎧";
-            phone = "📱";
-            portable = "🔊";
-            car = "🚗";
-            default = ["🔇" "🔉" "🔊"];
-          };
+          format-icons = ["🔇" "🔉" "🔊"];
           tooltip-format = "{volume}% volume";
           on-click = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+          on-click-right = "audio-menu-dropdown";
           on-scroll-up = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+";
           on-scroll-down = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
+        };
+
+        "wireplumber#microphone" = {
+          format = "{icon}";
+          format-muted = "🎤";
+          format-icons = ["🎙️"];
+          tooltip-format = "Microphone: {volume}%";
+          on-click = "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
+          on-click-right = "mic-menu-dropdown";
+          on-scroll-up = "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%+";
+          on-scroll-down = "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%-";
         };
       };
     };
@@ -167,7 +169,7 @@
       #tray,
       #battery,
       #network,
-      #pulseaudio {
+      #wireplumber {
         color: rgba(230, 220, 255, 0.8);
         padding: 0 8px;
         margin: 0 2px;
@@ -178,7 +180,7 @@
       #tray:hover,
       #battery:hover,
       #network:hover,
-      #pulseaudio:hover {
+      #wireplumber:hover {
         background: rgba(138, 97, 255, 0.15);
         color: rgba(255, 200, 220, 1);
         box-shadow: 0 0 8px rgba(138, 97, 255, 0.3);
@@ -229,13 +231,8 @@
       }
 
       /* Audio */
-      #pulseaudio.muted {
+      #wireplumber.muted {
         color: rgba(230, 220, 255, 0.3);
-      }
-
-      #pulseaudio.bluetooth {
-        color: #8a61ff;
-        text-shadow: 0 0 6px rgba(138, 97, 255, 0.5);
       }
 
 
