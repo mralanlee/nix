@@ -28,7 +28,6 @@
     kind
     lua
     zed-editor
-    aider-chat-full
     uv
 
     # for anyone reading this, I haven't gone soft.
