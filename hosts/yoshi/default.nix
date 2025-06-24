@@ -46,17 +46,6 @@
     });
   '';
 
-  # Create lid detection script for fingerprint auth
-  environment.systemPackages = with pkgs; [
-    (writeShellScriptBin "check-lid-state" ''
-      # Check if lid is closed
-      if [ -f /proc/acpi/button/lid/LID0/state ]; then
-        grep -q "closed" /proc/acpi/button/lid/LID0/state && exit 1
-      fi
-      exit 0
-    '')
-  ];
-
   # Configure PAM for fingerprint authentication
   security.pam.services = {
     login.fprintAuth = false; # Disable for login to prevent conflicts
