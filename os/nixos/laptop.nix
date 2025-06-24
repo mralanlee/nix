@@ -14,9 +14,12 @@ in {
   config = mkIf cfg.enable {
     # Standard laptop power management
     services.logind = {
-      lidSwitch = "suspend";
-      lidSwitchExternalPower = "suspend";  # Suspend even when plugged in to properly reinitialize display
+      lidSwitch = "suspend-then-hibernate";
+      lidSwitchExternalPower = "suspend-then-hibernate";  # Suspend even when plugged in to properly reinitialize display
       extraConfig = ''
+        LidSwitchIgnoreInhibited=yes
+        HandlePowerKey=suspend-then-hibernate
+        IdleAction=suspend-then-hibernate
         HandlePowerKey=suspend
         IdleAction=suspend
         IdleActionSec=15min
@@ -32,6 +35,7 @@ in {
       "amdgpu.sg_display=1"  # Enable scatter-gather for display (better for newer AMD APUs)
       "amdgpu.dpm=1"         # Enable dynamic power management
       "amdgpu.runpm=0"       # Disable runtime power management to prevent resume issues
+      "reboot=acpi"          # Use ACPI for reboot/shutdown
     ];
 
     # Disable NetworkManager wait-online service to speed up resume
@@ -45,10 +49,27 @@ in {
 
     # Power management for better battery life
     services.tlp.settings = {
-      STOP_CHARGE_THRESH_BAT0 = 80;
-      START_CHARGE_THRESH_BAT0 = 75;
+      TLP_DEFAULT_MOD = "BAT";
+      TLP_PERSISTENT_DEFAULT = 1;
+
+      CPU_BOOST_ON_BAT = 0;
+      RUNTIME_PM_ON_BAT = "auto";
+      PLATFORM_PROFILE_ON_AC = "balanced";
+      PLATFORM_PROFILE_ON_BAT = "low-power";
+
       CPU_SCALING_GOVERNOR_ON_AC = "performance";
       CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+
+      CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+      CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
+
+      CPU_MIN_PERF_ON_AC = 0;
+      CPU_MAX_PERF_ON_AC = 100;
+      CPU_MIN_PERF_ON_BAT = 0;
+      CPU_MAX_PERF_ON_BAT = 20;
+
+      START_CHARGE_THRESH_BAT0 = 40; # and bellow it starts to charge
+      STOP_CHARGE_THRESH_BAT0 = 97; # and above it stops charging
       WIFI_PWR_ON_AC = "off";
       WIFI_PWR_ON_BAT = "on";
     };

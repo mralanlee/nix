@@ -122,8 +122,11 @@
   services.blueman.enable = true;
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
+  hardware.bluetooth.package = pkgs.bluez;
   hardware.bluetooth.settings = {
     General = {
+      ControllerMode = "bredr";
+      Enable = "Source,Sink,Media,Socket";
       Experimental = true;
     };
   };
