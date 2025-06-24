@@ -125,3 +125,33 @@ wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
 ```
 
 **Alternative Approach**: If `wpctl` doesn't work, revert to `pactl` commands with pipewire-pulse compatibility layer.
+
+### Framework Laptop Power Issues (yoshi)
+
+**Issue**: On yoshi (Framework laptop), the system automatically boots back up immediately after shutdown when connected to USB-C power.
+
+**Symptoms**:
+- Running `systemctl poweroff` or `shutdown -h now` causes immediate reboot when plugged into USB-C
+- Wake on AC is confirmed disabled in BIOS
+- Issue started appearing around June 13-14, 2025
+- Works correctly when AC/USB is unplugged before shutdown
+
+**Solution Applied**:
+Added `reboot=acpi` kernel parameter to `/os/nixos/laptop.nix` to force ACPI-based shutdown:
+```nix
+boot.kernelParams = [
+  # ... other parameters ...
+  "reboot=acpi"          # Use ACPI for reboot/shutdown
+];
+```
+
+**To Apply Changes**:
+```bash
+sudo nixos-rebuild switch --flake .#yoshi
+```
+
+**Additional Troubleshooting Options if Issue Persists**:
+1. Try `acpi=force` kernel parameter to force ACPI handling
+2. Check for USB wake settings in `/proc/acpi/wakeup`
+3. Disable specific USB controllers from waking the system
+4. Consider Framework-specific BIOS updates or kernel parameters

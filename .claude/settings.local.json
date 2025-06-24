@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(grep:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(hyprctl dispatch:*)",
+      "Bash(hyprctl:*)",
+      "Bash(wpctl status:*)",
+      "Bash(systemctl status:*)"
     ],
     "deny": []
   }
