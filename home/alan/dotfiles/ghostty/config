@@ -1,0 +1,18 @@
+background-opacity = 0.8
+window-theme = dark
+
+font-family = "FiraCode Nerd Font"
+font-family-bold = "FiraCode Nerd Font"
+font-size = 14.0
+
+scrollback-limit = 10000
+mouse-scroll-multiplier = 3
+
+# Selection
+shell-integration = zsh
+
+# Mouse selection auto-copies to clipboard
+copy-on-select = true
+
+# Special characters for selection
+theme = catppuccin-macchiato

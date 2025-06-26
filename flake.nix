@@ -11,6 +11,9 @@
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
+    ghostty = {
+      url = "github:ghostty-org/ghostty";
+    };
     # macos
     darwin = {
       url = "github:lnl7/nix-darwin";
@@ -42,6 +45,7 @@
     nixpkgs,
     nixos-hardware,
     sops-nix,
+    ghostty,
     home-manager,
     zen-browser,
     darwin,

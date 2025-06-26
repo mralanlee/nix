@@ -5,6 +5,10 @@
       ".tmux.conf" = {
         source = ../dotfiles/tmux/.tmux.conf;
       };
+      ".config/ghostty" = {
+        source = ../dotfiles/ghostty;
+        recursive = true;
+      };
     };
   };
 
