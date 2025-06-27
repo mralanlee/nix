@@ -93,9 +93,10 @@ in {
       };
     };
 
-    # Load bluetooth module with fast resume parameters to prevent resume delays
+    # Load bluetooth module with optimized parameters
     boot.extraModprobeConfig = ''
-      options btusb enable_autosuspend=n
+      options btusb enable_autosuspend=n reset=1
+      options bluetooth disable_ertm=1 disable_esco=1
     '';
 
     # Faster NVMe resume
