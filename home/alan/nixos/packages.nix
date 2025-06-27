@@ -15,7 +15,9 @@
 
     bluebubbles
     railway
-    deno
+
+    ghostty
+    zoom-us
 
     # waybar dependencies
     pavucontrol
