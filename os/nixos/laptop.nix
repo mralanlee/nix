@@ -71,7 +71,7 @@ in {
       START_CHARGE_THRESH_BAT0 = 40; # and bellow it starts to charge
       STOP_CHARGE_THRESH_BAT0 = 97; # and above it stops charging
       WIFI_PWR_ON_AC = "off";
-      WIFI_PWR_ON_BAT = "on";
+      WIFI_PWR_ON_BAT = "off";
     };
 
     # Enable power management
