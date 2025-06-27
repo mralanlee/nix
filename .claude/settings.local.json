@@ -9,5 +9,6 @@
       "Bash(systemctl status:*)"
     ],
     "deny": []
-  }
+  },
+  "enableAllProjectMcpServers": false
 }
