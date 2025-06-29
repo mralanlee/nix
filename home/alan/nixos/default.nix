@@ -1,6 +1,7 @@
 {
   imports = [
     ../common
+    ./cursor.nix
     ./git.nix
     ./home.nix
     ./mako.nix
