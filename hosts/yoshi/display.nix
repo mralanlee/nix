@@ -4,26 +4,29 @@
   pkgs,
   ...
 }: {
+  # Disable GDM
+  services.xserver.displayManager.gdm.enable = false;
+  
+  # Enable TTY autologin
+  services.getty.autologinUser = "alan";
+  
+  # Keep minimal xserver config for compatibility
   services.xserver = {
     enable = true;
     displayManager = {
-      gdm = {
-        enable = true;
-        settings = {
-          daemon.AutomaticLoginEnable = false;
-          daemon.WaylandEnable = true;
-        };
-        wayland = true;
-      };
+      startx.enable = false;
+      lightdm.enable = false;
+      sddm.enable = false;
     };
   };
 
-  # Copy GDM monitor configuration for external monitor support
-  systemd.tmpfiles.rules = [
-    "L+ /run/gdm/.config/monitors.xml - - - - ${../../home/alan/dotfiles/gdm/monitors.xml}"
-  ];
-
-  services.displayManager.defaultSession = "hyprland";
+  services.displayManager = {
+    defaultSession = "hyprland";
+    autoLogin = {
+      enable = true;
+      user = "alan";
+    };
+  };
 
   programs.hyprland = {
     enable = true;

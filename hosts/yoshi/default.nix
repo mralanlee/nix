@@ -57,5 +57,36 @@
     gdm-password.fprintAuth = false; # Keep disabled to avoid breaking basic auth
   };
 
+  # Auto-start Hyprland via systemd user service
+  systemd.user.services.hyprland = {
+    enable = true;
+    description = "Hyprland - A dynamic tiling Wayland compositor";
+    wantedBy = [ "default.target" ];
+    after = [ "basic.target" "graphical-session-pre.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.hyprland}/bin/Hyprland";
+      Restart = "on-failure";
+      RestartSec = 1;
+      WorkingDirectory = "%h";
+      Type = "simple";
+      Environment = [
+        "XDG_SESSION_TYPE=wayland"
+        "XDG_CURRENT_DESKTOP=Hyprland"
+        "XDG_SESSION_DESKTOP=Hyprland"
+        "XDG_CONFIG_HOME=%h/.config"
+        "HOME=%h"
+        "PATH=/run/wrappers/bin:/home/alan/.nix-profile/bin:/etc/profiles/per-user/alan/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin"
+        "QT_WAYLAND_DISABLE_WINDOWDECORATION=1"
+        "WLR_NO_HARDWARE_CURSORS=1"
+        "WLR_BACKEND=gl"
+        "QT_QPA_PLATFORM=wayland"
+        "GDK_BACKEND=wayland"
+        "NIXOS_OZONE_WL=1"
+        "SDL_VIDEODRIVER=wayland"
+        "CLUTTER_BACKEND=wayland"
+      ];
+    };
+  };
+
   system.stateVersion = "25.05";
 }
