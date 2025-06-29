@@ -1,16 +1,12 @@
 {config, ...}: {
-  services.xserver = {
-    enable = true;
-    displayManager = {
-      gdm = {
-        enable = true;
-        settings = {
-          daemon.AutomaticLoginEnable = false;
-        };
-        wayland = true;
-      };
-    };
-  };
+  # Disable GDM
+  services.xserver.displayManager.gdm.enable = false;
+  
+  # Enable TTY autologin
+  services.getty.autologinUser = "alan";
+  
+  # Keep minimal xserver config for compatibility
+  services.xserver.enable = true;
 
   services.displayManager.defaultSession = "hyprland";
 
@@ -21,8 +17,10 @@
     };
   };
 
-  # Copy GDM monitor configuration for external monitor support
-  systemd.tmpfiles.rules = [
-    "L+ /run/gdm/.config/monitors.xml - - - - ${../../home/alan/dotfiles/gdm/monitors.xml}"
-  ];
+  # Auto-start Hyprland on TTY1 login
+  environment.loginShellInit = ''
+    if [ "$(tty)" = "/dev/tty1" ]; then
+      exec Hyprland
+    fi
+  '';
 }
