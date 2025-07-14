@@ -22,6 +22,7 @@
     # developer tools
     mise
     devbox
+    opencode
     claude-code
     alejandra
     hub
