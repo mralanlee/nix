@@ -23,6 +23,7 @@
     mise
     devbox
     opencode
+    vscode
     claude-code
     alejandra
     hub
