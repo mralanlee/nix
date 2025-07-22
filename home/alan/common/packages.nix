@@ -24,6 +24,7 @@
     devbox
     opencode
     vscode
+    code-cursor
     claude-code
     alejandra
     hub
