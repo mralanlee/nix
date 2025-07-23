@@ -25,6 +25,9 @@
   };
 
   services.pulseaudio.enable = false;
+  services.pulseaudio.extraConfig = "
+    load-module module-switch-on-connect
+    ";
 
   # Fix choppy text and scaling in 1Password on Wayland
   nixpkgs.overlays = [
