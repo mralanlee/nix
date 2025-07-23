@@ -1,6 +1,6 @@
-{pkgs, ...}: {
+{pkgs, config, ...}: {
   programs.tmux = {
-    enable = true;
+    enable = config.myConfig.tmux.enable;
     # config in dotfiles
   };
 }

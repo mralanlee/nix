@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{pkgs, config, ...}: {
   programs = {
     atuin = {
       enable = true;
@@ -14,7 +14,7 @@
           "docker"
           "docker-compose"
           "git"
-          "tmux"
+        ] ++ (if config.myConfig.tmux.enable then ["tmux"] else []) ++ [
           "terraform"
           "deno"
           "fzf"
@@ -22,17 +22,21 @@
       };
 
       initContent = ''
+        ${if config.myConfig.tmux.enable then ''
         # tmux autostart
         export ZSH_TMUX_AUTOSTART=true
         if [ "$TMUX" = "" ]; then tmux; fi
+        '' else ""}
 
         # fzf
         export FZF_DEFAULT_OPTS='-x --height 40% --layout=reverse --border'
         export FZF_CTRL_T_OPTS='--select-1 --exit-0'
         export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
         export FZF_ALT_C_OPTS="--select-1 --exit-0 --preview 'tree -C {} | head -200'"
+        ${if config.myConfig.tmux.enable then ''
         export FZF_TMUX=1
         export FZF_TMUX_OPTS='-d 40%'
+        '' else ""}
 
 
         if [ $commands[kubectl] ]; then
@@ -91,7 +95,7 @@
     fzf = {
       enable = true;
       enableZshIntegration = true;
-      tmux.enableShellIntegration = true;
+      tmux.enableShellIntegration = config.myConfig.tmux.enable;
     };
 
     eza = {

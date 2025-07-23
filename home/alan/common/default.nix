@@ -6,6 +6,7 @@
     ./home.nix
     ./kubernetes.nix
     ./neovim.nix
+    ./options.nix
     ./packages.nix
     ./scripts.nix
     ./shell.nix
