@@ -5,6 +5,10 @@ return {
   },
   config = function()
     require("claude-code").setup({
+      window = {
+        split_ration = 0.3,
+        position = "vertical",
+      },
       refresh = {
         enable = true,
         updatetime = 50,
