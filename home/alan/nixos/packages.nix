@@ -12,11 +12,20 @@
     hypridle
     inputs.zen-browser.packages."${system}".twilight
     git-credential-manager
+    redisinsight
 
     bluebubbles
     railway
 
-    ghostty
+    # Ghostty with epoll workaround for kernel 6.9+ performance issue
+    # https://github.com/NixOS/nixpkgs/issues/421442
+    (ghostty.overrideAttrs (_: {
+      preBuild = ''
+        shopt -s globstar
+        sed -i 's/^const xev = @import("xev");$/const xev = @import("xev").Epoll;/' **/*.zig
+        shopt -u globstar
+      '';
+    }))
     zoom-us
 
     # waybar dependencies
