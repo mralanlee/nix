@@ -11,9 +11,6 @@
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
-    ghostty = {
-      url = "github:ghostty-org/ghostty";
-    };
     # macos
     darwin = {
       url = "github:lnl7/nix-darwin";
@@ -45,7 +42,6 @@
     nixpkgs,
     nixos-hardware,
     sops-nix,
-    ghostty,
     home-manager,
     zen-browser,
     darwin,
@@ -83,6 +79,9 @@
             home-manager.extraSpecialArgs = {
               inherit inputs;
               system = "x86_64-linux";
+              myConfig = {
+                tmux.enable = true;
+              };
             };
           }
         ];
@@ -107,6 +106,9 @@
             home-manager.extraSpecialArgs = {
               inherit inputs;
               system = "x86_64-linux";
+              myConfig = {
+                tmux.enable = false;
+              };
             };
           }
         ];
@@ -130,6 +132,11 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.alan = import ./home/alan/darwin;
+            home-manager.extraSpecialArgs = {
+              myConfig = {
+                tmux.enable = true;
+              };
+            };
           }
           nix-homebrew.darwinModules.nix-homebrew
           {
