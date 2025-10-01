@@ -17,7 +17,7 @@
     discord
 
     # media
-    spotify
+    # spotify  # temporarily disabled due to download issues
 
     # developer tools
     mise
@@ -32,6 +32,7 @@
     lua
     zed-editor
     uv
+    jdk24
 
     # containerization and related tooling
     podman
@@ -44,7 +45,6 @@
     stern
 
     # terraform
-    terraform-docs
     terraform
     tgswitch
     hclfmt
