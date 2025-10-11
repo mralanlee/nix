@@ -5,6 +5,7 @@
     ./shell.nix
     ./git.nix
     ./home.nix
+    ./nix.nix
   ];
 
   home = {
