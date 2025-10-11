@@ -91,23 +91,19 @@
         system = "x86_64-linux";
         specialArgs = {inherit inputs;};
         modules = [
-          ./hosts/yoshi
+          ./os/ubuntu
           home-manager.nixosModules.home-manager
-          sops-nix.nixosModules.sops
-          {
-            hardware.laptop.enable = true;
-          }
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.alan.imports = [
-              ./home/alan/nixos
-            ]; # this will be nixos config
+              ./home/alan/ubuntu
+            ];
             home-manager.extraSpecialArgs = {
               inherit inputs;
               system = "x86_64-linux";
               myConfig = {
-                tmux.enable = false;
+                tmux.enable = true;
               };
             };
           }

@@ -26,6 +26,7 @@
     vscode
     code-cursor
     claude-code
+    google-cloud-sdk
     alejandra
     hub
     kind
