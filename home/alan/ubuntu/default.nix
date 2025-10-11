@@ -6,4 +6,10 @@
     ./git.nix
     ./home.nix
   ];
+
+  home = {
+    username = "alan";
+    homeDirectory = "/home/alan";
+    stateVersion = "24.05";
+  };
 }
