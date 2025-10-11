@@ -62,6 +62,22 @@
       system: nixpkgs.legacyPackages.${system}.alejandra
     );
 
+    homeConfigurations = {
+      "alan@yoshi" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [
+          ./home/alan/ubuntu
+        ];
+        extraSpecialArgs = {
+          inherit inputs;
+          system = "x86_64-linux";
+          myConfig = {
+            tmux.enable = true;
+          };
+        };
+      };
+    };
+
     nixosConfigurations = {
       shimmer = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -76,29 +92,6 @@
             home-manager.users.alan.imports = [
               ./home/alan/nixos
             ]; # this will be nixos config
-            home-manager.extraSpecialArgs = {
-              inherit inputs;
-              system = "x86_64-linux";
-              myConfig = {
-                tmux.enable = true;
-              };
-            };
-          }
-        ];
-      };
-
-      yoshi = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {inherit inputs;};
-        modules = [
-          ./os/ubuntu
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.alan.imports = [
-              ./home/alan/ubuntu
-            ];
             home-manager.extraSpecialArgs = {
               inherit inputs;
               system = "x86_64-linux";
