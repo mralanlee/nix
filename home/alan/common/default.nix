@@ -2,6 +2,7 @@
   imports = [
     ./alacritty.nix
     ./cli.nix
+    ./fonts.nix
     ./git.nix
     ./home.nix
     ./kubernetes.nix
