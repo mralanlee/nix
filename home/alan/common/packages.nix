@@ -27,6 +27,7 @@
     vscode
     code-cursor
     claude-code
+    ghostty
     google-cloud-sdk
     alejandra
     hub
@@ -35,6 +36,10 @@
     uv
     jdk21
 
+    zoom-us
+    railway
+    redisinsight
+    obsidian
     # containerization and related tooling
     podman
     podman-compose
