@@ -90,6 +90,11 @@
     starship = {
       enable = true;
       enableZshIntegration = true;
+      settings = {
+        gcloud = {
+          format = "'on [$symbol$account(\($region\))]($style) '";
+        };
+      };
     };
 
     fzf = {
