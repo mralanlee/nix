@@ -45,8 +45,8 @@
         fi
 
         export PATH=$PATH:/Users/alan/.spicetify
-        eval "$(/Users/alan/.local/bin/mise activate zsh)"
-        eval "$(~/.local/bin/mise activate zsh)"
+        # eval "$(/Users/alan/.local/bin/mise activate zsh)"  # Temporarily disabled
+        # eval "$(~/.local/bin/mise activate zsh)"  # Temporarily disabled
         export PATH="$HOME/.krew/bin:$PATH"
 
         export ZSH_CUSTOM=$HOME/.config/zsh

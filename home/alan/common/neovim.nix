@@ -9,7 +9,7 @@
       cargo
       delve
       docker-compose-language-service
-      dockerfile-language-server-nodejs
+      dockerfile-language-server
       gcc
       goimports-reviser
       gopls

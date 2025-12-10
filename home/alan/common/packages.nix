@@ -10,6 +10,7 @@
     tree
     jq
 
+    nodejs_24
     # chat
     telegram-desktop
     slack
@@ -20,7 +21,7 @@
     # spotify  # temporarily disabled due to download issues
 
     # developer tools
-    mise
+    # mise  # Temporarily disabled due to Fish build issue
     devbox
     opencode
     vscode
@@ -33,7 +34,7 @@
     lua
     zed-editor
     uv
-    jdk24
+    jdk21
 
     # containerization and related tooling
     podman
