@@ -144,7 +144,7 @@
   hardware = {
     graphics.enable = true;
     enableAllFirmware = true;
-    firmware = [pkgs.firmwareLinuxNonfree];
+    firmware = [pkgs.linux-firmware];
   };
 
   users.users.alan = {
