@@ -32,7 +32,6 @@
     hub
     kind
     lua
-    zed-editor
     uv
     jdk21
 
