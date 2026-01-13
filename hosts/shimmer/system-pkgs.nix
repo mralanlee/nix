@@ -9,7 +9,7 @@
     waybar
     kitty
     pavucontrol
-    rofi-wayland
+    rofi
 
     # clipboard
     wl-clipboard

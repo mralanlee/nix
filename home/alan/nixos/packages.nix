@@ -7,7 +7,7 @@
   home.packages = with pkgs; [
     obsidian
     hyprpaper
-    rofi-wayland
+    rofi
     hyprlock
     hypridle
     inputs.zen-browser.packages."${system}".twilight

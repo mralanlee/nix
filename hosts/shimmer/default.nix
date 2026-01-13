@@ -17,7 +17,7 @@
   programs.nm-applet.enable = true;
 
   hardware.graphics.extraPackages = with pkgs; [
-    vaapiIntel
+    intel-vaapi-driver
     intel-compute-runtime
     intel-media-driver
     vpl-gpu-rt
