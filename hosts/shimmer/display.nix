@@ -1,6 +1,6 @@
 {config, ...}: {
   # Disable GDM
-  services.xserver.displayManager.gdm.enable = false;
+  services.displayManager.gdm.enable = false;
 
   # Enable TTY autologin
   services.getty.autologinUser = "alan";

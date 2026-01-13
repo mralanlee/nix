@@ -21,6 +21,6 @@
   # Qt cursor configuration
   qt = {
     enable = true;
-    platformTheme = "gtk";
+    platformTheme.name = "gtk";
   };
 }

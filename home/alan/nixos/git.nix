@@ -4,7 +4,9 @@
   ...
 }: {
   programs.git = {
-    userEmail = "alanleunglee@gmail.com";
+    settings = {
+      user.email = "alanleunglee@gmail.com";
+    };
   };
   programs.gh.gitCredentialHelper.enable = true;
 }

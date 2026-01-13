@@ -5,9 +5,9 @@
 }: {
   programs.git = {
     enable = true;
-    userName = "Alan Lee";
     ignores = [".envrc" "devbox.json" "devbox.lock"];
-    extraConfig = {
+    settings = {
+      user.name = "Alan Lee";
       init = {defaultBranch = "main";};
       gpg = {format = "ssh";};
       push = {autoSetupRemote = true;};
@@ -16,8 +16,11 @@
         credentialStore = "none";
       };
     };
-    delta = {enable = false;};
-    difftastic = {enable = true;};
+  };
+  programs.delta = {enable = false;};
+  programs.difftastic = {
+    enable = true;
+    git.enable = true;
   };
   programs.gh = {
     enable = true;

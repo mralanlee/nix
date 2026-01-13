@@ -1,10 +1,14 @@
 {
   programs.ssh = {
     enable = true;
-    extraConfig = ''
-      Host *
-        AddKeysToAgent yes
-        IdentityFile ~/.ssh/id_ed25519
-    '';
+    enableDefaultConfig = false;
+    matchBlocks = {
+      "*" = {
+        extraOptions = {
+          AddKeysToAgent = "yes";
+          IdentityFile = "~/.ssh/id_ed25519";
+        };
+      };
+    };
   };
 }
