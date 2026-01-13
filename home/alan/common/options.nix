@@ -1,6 +1,8 @@
-{ lib, myConfig ? {}, ... }:
-
 {
+  lib,
+  myConfig ? {},
+  ...
+}: {
   options = {
     myConfig = {
       tmux.enable = lib.mkOption {

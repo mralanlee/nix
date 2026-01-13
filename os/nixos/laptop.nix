@@ -15,7 +15,7 @@ in {
     # Standard laptop power management
     services.logind = {
       lidSwitch = "suspend-then-hibernate";
-      lidSwitchExternalPower = "suspend-then-hibernate";  # Suspend even when plugged in to properly reinitialize display
+      lidSwitchExternalPower = "suspend-then-hibernate"; # Suspend even when plugged in to properly reinitialize display
       extraConfig = ''
         LidSwitchIgnoreInhibited=yes
         HandlePowerKey=suspend-then-hibernate
@@ -31,11 +31,11 @@ in {
       "mem_sleep_default=deep"
       "acpi_osi=Linux"
       "nmi_watchdog=0"
-      "amdgpu.dc=1"          # Enable Display Core for better display handling
-      "amdgpu.sg_display=1"  # Enable scatter-gather for display (better for newer AMD APUs)
-      "amdgpu.dpm=1"         # Enable dynamic power management
-      "amdgpu.runpm=0"       # Disable runtime power management to prevent resume issues
-      "reboot=acpi"          # Use ACPI for reboot/shutdown
+      "amdgpu.dc=1" # Enable Display Core for better display handling
+      "amdgpu.sg_display=1" # Enable scatter-gather for display (better for newer AMD APUs)
+      "amdgpu.dpm=1" # Enable dynamic power management
+      "amdgpu.runpm=0" # Disable runtime power management to prevent resume issues
+      "reboot=acpi" # Use ACPI for reboot/shutdown
     ];
 
     # Disable NetworkManager wait-online service to speed up resume
@@ -107,7 +107,7 @@ in {
       # Disable USB autosuspend for specific devices that cause delays
       ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="32ac", ATTR{idProduct}=="0012", ATTR{power/control}="on"
       ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="32ac", ATTR{idProduct}=="0014", ATTR{power/control}="on"
-      
+
       # Fix USB controller resume issues for Bluetooth
       ACTION=="add", SUBSYSTEM=="pci", DRIVER=="xhci_hcd", ATTR{power/control}="on"
       ACTION=="add", SUBSYSTEM=="usb", ATTR{authorized}=="1", TEST=="power/control", ATTR{power/control}="on"
@@ -115,6 +115,5 @@ in {
 
     # Ensure screen locks when suspending
     # Note: Auto-login settings are handled per-host in display.nix
-
   };
 }
