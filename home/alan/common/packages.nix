@@ -1,59 +1,66 @@
 {pkgs, ...}: {
-  home.packages = with pkgs; [
-    # fonts
-    nerd-fonts.fira-code
-    nerd-fonts.jetbrains-mono
+  home.packages =
+    [
+      # fonts
+    ]
+    ++ (if pkgs ? nerdfonts then
+      [(pkgs.nerdfonts.override {fonts = ["FiraCode" "JetBrainsMono"];})]
+    else
+      [
+        pkgs."nerd-fonts".fira-code
+        pkgs."nerd-fonts".jetbrains-mono
+      ])
+    ++ (with pkgs; [
+      awscli2
+      fd
+      htop
+      tree
+      jq
 
-    awscli2
-    fd
-    htop
-    tree
-    jq
+      nodejs_24
+      # chat
+      telegram-desktop
+      slack
+      signal-desktop-bin
+      discord
 
-    nodejs_24
-    # chat
-    telegram-desktop
-    slack
-    signal-desktop-bin
-    discord
+      # media
+      # spotify  # temporarily disabled due to download issues
 
-    # media
-    # spotify  # temporarily disabled due to download issues
+      # developer tools
+      # mise  # Temporarily disabled due to Fish build issue
+      devbox
+      opencode
+      vscode
+      code-cursor
+      claude-code
+      ghostty
+      google-cloud-sdk
+      alejandra
+      hub
+      kind
+      lua
+      uv
+      jdk21
 
-    # developer tools
-    # mise  # Temporarily disabled due to Fish build issue
-    devbox
-    opencode
-    vscode
-    code-cursor
-    claude-code
-    ghostty
-    google-cloud-sdk
-    alejandra
-    hub
-    kind
-    lua
-    uv
-    jdk21
+      zoom-us
+      railway
+      redisinsight
+      obsidian
+      # containerization and related tooling
+      podman
+      podman-compose
+      podman-tui
+      kubeconform
+      kubectl
+      k9s
+      lens
+      stern
 
-    zoom-us
-    railway
-    redisinsight
-    obsidian
-    # containerization and related tooling
-    podman
-    podman-compose
-    podman-tui
-    kubeconform
-    kubectl
-    k9s
-    lens
-    stern
-
-    # terraform
-    terraform
-    tgswitch
-    hclfmt
-    # terraform-ls moved to neovim config
-  ];
+      # terraform
+      terraform
+      tgswitch
+      hclfmt
+      # terraform-ls moved to neovim config
+    ]);
 }
