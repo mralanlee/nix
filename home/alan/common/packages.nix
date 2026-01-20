@@ -14,6 +14,8 @@
       signal-desktop-bin
       discord
 
+      nerd-fonts.fira-code
+      nerd-fonts.jetbrains-mono
       # media
       # spotify  # temporarily disabled due to download issues
 
@@ -34,7 +36,6 @@
 
       zoom-us
       railway
-      redisinsight
       obsidian
       # containerization and related tooling
       podman
