@@ -10,10 +10,6 @@
       enable = true;
       style = "slight";
     };
-    subpixel = {
-      rgba = "rgb";
-      lcdfilter = "default";
-    };
     defaultFonts = {
       monospace = ["JetBrains Mono"];
       sansSerif = ["Inter" "Liberation Sans"];
