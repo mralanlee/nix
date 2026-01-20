@@ -19,13 +19,13 @@ sudo nixos-rebuild build --flake .#shimmer
 sudo nixos-rebuild test --flake .#shimmer
 ```
 
-**macOS Systems (drumwave):**
+**macOS Systems (canary):**
 ```bash
 # Switch to new configuration
-darwin-rebuild switch --flake .#drumwave
+darwin-rebuild switch --flake .#canary
 
 # Build without switching
-darwin-rebuild build --flake .#drumwave
+darwin-rebuild build --flake .#canary
 
 # Quick rebuild alias (defined in shell config)
 rebuild  # equivalent to: darwin-rebuild switch --flake ~/projects/nix

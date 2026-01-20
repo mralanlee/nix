@@ -3,5 +3,5 @@
     ../../os/darwin
   ];
 
-  networking.hostName = "drumwave";
+  networking.hostName = "canary";
 }

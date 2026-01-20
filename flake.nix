@@ -105,10 +105,10 @@
     };
 
     darwinConfigurations = {
-      drumwave = darwin.lib.darwinSystem {
+      canary = darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         modules = [
-          ./hosts/drumwave
+          ./hosts/canary
           # sops-nix.nixosModules.sops
           home-manager.darwinModules.home-manager
           mac-app-util.darwinModules.default

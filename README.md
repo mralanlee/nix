@@ -9,7 +9,7 @@ This repository contains my personal Nix configuration for both NixOS and macOS 
 ├── flake.nix           # Main flake defining system configurations
 ├── flake.lock          # Lock file for reproducible builds
 ├── hosts/              # Host-specific configurations
-│   ├── drumwave/       # macOS (aarch64-darwin) configuration
+│   ├── canary/         # macOS (aarch64-darwin) configuration
 │   ├── shimmer/        # NixOS (x86_64-linux) configuration
 │   └── yoshi/          # NixOS (x86_64-linux) configuration
 ├── os/                 # OS-level configurations
@@ -31,7 +31,7 @@ The `flake.nix` file is the entry point that:
 
 - Defines inputs (nixpkgs, home-manager, darwin, hardware modules, etc.)
 - Configures NixOS systems (`shimmer`, `yoshi`)
-- Configures macOS systems (`drumwave`)
+- Configures macOS systems (`canary`)
 - Integrates home-manager for user-specific configurations
 
 ### 2. **Layered Configuration**
@@ -84,7 +84,7 @@ Packages are distributed through multiple layers:
 
 ### macOS Hosts
 
-- **drumwave**: aarch64-darwin (Apple Silicon) with Homebrew integration
+- **canary**: aarch64-darwin (Apple Silicon) with Homebrew integration
 
 ## Key Features
 
@@ -115,10 +115,10 @@ sudo nixos-rebuild test --flake .#shimmer
 
 ```bash
 # Build and switch to a new configuration
-darwin-rebuild switch --flake .#drumwave
+darwin-rebuild switch --flake .#canary
 
 # Build without switching
-darwin-rebuild build --flake .#drumwave
+darwin-rebuild build --flake .#canary
 ```
 
 ### Formatting
