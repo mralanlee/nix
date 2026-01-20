@@ -1,12 +1,5 @@
 {pkgs, ...}: {
-  fonts.packages =
-    if pkgs ? nerdfonts then
-      [(pkgs.nerdfonts.override {fonts = ["FiraCode" "JetBrainsMono"];})]
-    else
-      [
-        pkgs."nerd-fonts".fira-code
-        pkgs."nerd-fonts".jetbrains-mono
-      ];
+  fonts.packages = [];
 
   fonts.fontconfig = {
     enable = true;

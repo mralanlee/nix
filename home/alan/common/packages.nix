@@ -1,16 +1,5 @@
 {pkgs, ...}: {
-  home.packages =
-    [
-      # fonts
-    ]
-    ++ (if pkgs ? nerdfonts then
-      [(pkgs.nerdfonts.override {fonts = ["FiraCode" "JetBrainsMono"];})]
-    else
-      [
-        pkgs."nerd-fonts".fira-code
-        pkgs."nerd-fonts".jetbrains-mono
-      ])
-    ++ (with pkgs; [
+  home.packages = with pkgs; [
       awscli2
       fd
       htop
@@ -60,7 +49,7 @@
       # terraform
       terraform
       tgswitch
-      hclfmt
-      # terraform-ls moved to neovim config
-    ]);
+    hclfmt
+    # terraform-ls moved to neovim config
+  ];
 }
