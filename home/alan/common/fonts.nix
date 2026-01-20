@@ -1,5 +1,4 @@
 {pkgs, ...}: {
-  fonts.packages = [];
 
   fonts.fontconfig = {
     enable = true;
