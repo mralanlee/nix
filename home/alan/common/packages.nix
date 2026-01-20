@@ -1,5 +1,6 @@
 {pkgs, ...}: {
-  home.packages = with pkgs; [
+  home.packages =
+    (with pkgs; [
       awscli2
       fd
       htop
@@ -23,7 +24,6 @@
       vscode
       code-cursor
       claude-code
-      ghostty
       google-cloud-sdk
       alejandra
       hub
@@ -49,7 +49,8 @@
       # terraform
       terraform
       tgswitch
-    hclfmt
-    # terraform-ls moved to neovim config
-  ];
+      hclfmt
+      # terraform-ls moved to neovim config
+    ])
+    ++ (pkgs.lib.optionals (!pkgs.stdenv.isDarwin) [pkgs.ghostty]);
 }

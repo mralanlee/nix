@@ -22,7 +22,6 @@
       "sf-symbols"
       "font-sf-mono"
       "font-sf-pro"
-      "ghostty"
     ];
 
     brews = [
