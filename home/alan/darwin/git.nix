@@ -3,11 +3,6 @@
   pkgs,
   ...
 }: {
-  programs.git = {
-    userEmail = "alan@drumwave.com";
-    signing = {
-      key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOy9DqYxurmsXbW0bm0/L3gYgKfg850MsTlA4afSjf5r alan@drumwave.com";
-    };
-  };
+  # Signing configuration is handled in common/git.nix
   programs.gh.gitCredentialHelper.enable = true;
 }

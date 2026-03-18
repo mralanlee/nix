@@ -6,10 +6,15 @@
   programs.git = {
     enable = true;
     ignores = [".envrc" "devbox.json" "devbox.lock"];
+    extraConfig = {
+      gpg.format = "ssh";
+    };
     settings = {
       user.name = "Alan Lee";
+      user.email = "alee@canarytechnologies.com";
+      user.signingKey = "/Users/alan/.ssh/id_ed25519.pub";
+      commit.gpgsign = true;
       init = {defaultBranch = "main";};
-      gpg = {format = "ssh";};
       push = {autoSetupRemote = true;};
       pull = {rebase = true;};
       credential = {
@@ -26,7 +31,6 @@
     enable = true;
     settings = {git_protocol = "https";};
     gitCredentialHelper.enable = lib.mkDefault true;
-    extensions = [pkgs.gh-copilot];
   };
   programs.lazygit = {enable = true;};
   xdg.configFile.gh-copilot = {
