@@ -57,6 +57,10 @@
           else ""
         }
 
+        export DIRENV_LOG_FORMAT=""
+        export CANARY_DIR=
+        export CANARY_DIR="$HOME/projects/canary"
+        eval "$(direnv hook zsh)"
 
         if [ $commands[kubectl] ]; then
           source <(kubectl completion zsh)
@@ -92,7 +96,6 @@
         "kns" = "kubens";
         "kx" = "kubectx";
         "qf" = "find. -type f | fzf";
-        "docker" = "podman";
         "k" = "kubectl";
         "kcm" = "kubectl kc";
         "l" = "eza";

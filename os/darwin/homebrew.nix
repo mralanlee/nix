@@ -18,6 +18,7 @@
       "1password-cli"
       "betterdisplay"
       "claude"
+      "docker"
       "karabiner-elements"
       "sf-symbols"
       "font-sf-mono"

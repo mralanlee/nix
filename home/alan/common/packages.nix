@@ -11,13 +11,13 @@
       # chat
       telegram-desktop
       slack
-      signal-desktop-bin
+      signal-desktop
       discord
 
       nerd-fonts.fira-code
       nerd-fonts.jetbrains-mono
       # media
-      # spotify  # temporarily disabled due to download issues
+      spotify
 
       # developer tools
       # mise  # Temporarily disabled due to Fish build issue
@@ -29,6 +29,7 @@
       google-cloud-sdk
       alejandra
       hub
+      direnv
       kind
       lua
       uv
@@ -38,9 +39,7 @@
       railway
       obsidian
       # containerization and related tooling
-      podman
-      podman-compose
-      podman-tui
+
       kubeconform
       kubectl
       k9s
@@ -49,6 +48,8 @@
 
       # terraform
       terraform
+      terragrunt
+      opentofu
       tgswitch
       hclfmt
       # terraform-ls moved to neovim config
