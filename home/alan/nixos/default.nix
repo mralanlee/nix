@@ -7,6 +7,7 @@
     ./mako.nix
     ./packages.nix
     ./shell.nix
+    ./ssh.nix
     ./waybar.nix
   ];
 }

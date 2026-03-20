@@ -1,8 +1,10 @@
 {
-  config,
-  pkgs,
+  hostname,
+  lib,
   ...
 }: {
-  # Signing configuration is handled in common/git.nix
+  programs.git.settings = lib.mkIf (hostname == "yoshi-mac") {
+    commit.gpgsign = lib.mkForce false;
+  };
   programs.gh.gitCredentialHelper.enable = true;
 }

@@ -39,6 +39,7 @@
       railway
       obsidian
       # containerization and related tooling
+      docker-compose
 
       kubeconform
       kubectl

@@ -104,44 +104,58 @@
       };
     };
 
-    darwinConfigurations = {
-      canary = darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
-        modules = [
-          ./hosts/canary
-          # sops-nix.nixosModules.sops
-          home-manager.darwinModules.home-manager
-          mac-app-util.darwinModules.default
-          {
-            home-manager.sharedModules = [
-              mac-app-util.homeManagerModules.default
-            ];
-          }
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.alan = import ./home/alan/darwin;
-            home-manager.extraSpecialArgs = {
-              myConfig = {
-                tmux.enable = true;
+    darwinConfigurations = let
+      mkDarwin = {
+        hostDir,
+        hostname,
+        myConfig ? {
+          tmux.enable = true;
+        },
+      }:
+        darwin.lib.darwinSystem {
+          system = "aarch64-darwin";
+          modules = [
+            hostDir
+            home-manager.darwinModules.home-manager
+            mac-app-util.darwinModules.default
+            {
+              home-manager.sharedModules = [
+                mac-app-util.homeManagerModules.default
+              ];
+            }
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.alan = import ./home/alan/darwin;
+              home-manager.extraSpecialArgs = {
+                inherit hostname myConfig;
               };
-            };
-          }
-          nix-homebrew.darwinModules.nix-homebrew
-          {
-            nix-homebrew = {
-              enable = true;
-              enableRosetta = true;
+            }
+            nix-homebrew.darwinModules.nix-homebrew
+            {
+              nix-homebrew = {
+                enable = true;
+                enableRosetta = true;
 
-              user = "alan";
-              taps = {
-                "homebrew/homebrew-core" = homebrew-core;
-                "homebrew/homebrew-cask" = homebrew-cask;
-                "nikitabobko/tap" = aerospace-tap;
+                user = "alan";
+                taps = {
+                  "homebrew/homebrew-core" = homebrew-core;
+                  "homebrew/homebrew-cask" = homebrew-cask;
+                  "nikitabobko/tap" = aerospace-tap;
+                };
               };
-            };
-          }
-        ];
+            }
+          ];
+        };
+    in {
+      canary = mkDarwin {
+        hostDir = ./hosts/canary;
+        hostname = "canary";
+      };
+
+      yoshi-mac = mkDarwin {
+        hostDir = ./hosts/yoshi-mac;
+        hostname = "yoshi-mac";
       };
     };
   };
