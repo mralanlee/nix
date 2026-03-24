@@ -46,6 +46,7 @@
       k9s
       lens
       stern
+      railway
 
       # terraform
       terraform

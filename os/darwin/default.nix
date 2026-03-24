@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   imports = [
     ../common
+    ./defaults.nix
     ./homebrew.nix
     ./nix.nix
     ./packages.nix
