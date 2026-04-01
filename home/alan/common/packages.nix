@@ -21,6 +21,8 @@
 
       # developer tools
       # mise  # Temporarily disabled due to Fish build issue
+      antigravity
+      gemini-cli
       devbox
       opencode
       vscode
@@ -39,6 +41,7 @@
       railway
       obsidian
       # containerization and related tooling
+      colima
       docker-compose
 
       kubeconform
