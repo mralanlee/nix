@@ -22,6 +22,7 @@
       # developer tools
       # mise  # Temporarily disabled due to Fish build issue
       antigravity
+      codex
       gemini-cli
       devbox
       opencode
