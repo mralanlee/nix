@@ -65,6 +65,14 @@ run = 'layout floating'
 if.app-name-regex-substring = 'Signal'
 run = 'layout floating'
 
+[[on-window-detected]]
+if.app-id = 'net.kovidgoyal.kitty'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'org.alacritty'
+run = 'layout floating'
+
 # [[on-window-detected]]
 # if.app-name-regex-substring = 'arc'
 # run = 'layout floating'

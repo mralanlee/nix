@@ -72,7 +72,7 @@
           inherit inputs;
           system = "x86_64-linux";
           myConfig = {
-            tmux.enable = true;
+            tmux.enable = false;
           };
         };
       };
@@ -96,7 +96,7 @@
               inherit inputs;
               system = "x86_64-linux";
               myConfig = {
-                tmux.enable = true;
+                tmux.enable = false;
               };
             };
           }
@@ -109,7 +109,7 @@
         hostDir,
         hostname,
         myConfig ? {
-          tmux.enable = true;
+          tmux.enable = false;
         },
       }:
         darwin.lib.darwinSystem {

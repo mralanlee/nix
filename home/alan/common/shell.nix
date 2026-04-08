@@ -12,6 +12,7 @@
     zsh = {
       enable = true;
       enableCompletion = true;
+      dotDir = config.home.homeDirectory;
       history.size = 100000;
       oh-my-zsh = {
         enable = true;

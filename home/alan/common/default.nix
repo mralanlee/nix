@@ -5,6 +5,7 @@
     ./fonts.nix
     ./git.nix
     ./home.nix
+    ./kitty.nix
     ./kubernetes.nix
     ./neovim.nix
     ./options.nix

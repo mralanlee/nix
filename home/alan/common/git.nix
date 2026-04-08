@@ -6,10 +6,8 @@
   programs.git = {
     enable = true;
     ignores = [".envrc" "devbox.json" "devbox.lock"];
-    extraConfig = {
-      gpg.format = "ssh";
-    };
     settings = {
+      gpg.format = "ssh";
       user.name = "Alan Lee";
       user.email = "alee@canarytechnologies.com";
       user.signingKey = "/Users/alan/.ssh/id_ed25519.pub";

@@ -19,7 +19,7 @@
       hadolint
       lua-language-server
       marksman
-      nodePackages.typescript-language-server
+      typescript-language-server
       shfmt
       terraform-ls
       yaml-language-server
