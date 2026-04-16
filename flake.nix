@@ -35,6 +35,11 @@
       url = "github:nikitabobko/homebrew-tap";
       flake = false;
     };
+
+    graphite-tap = {
+      url = "github:withgraphite/homebrew-tap";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -50,6 +55,7 @@
     homebrew-cask,
     mac-app-util,
     aerospace-tap,
+    graphite-tap,
     ...
   } @ inputs: let
     forAllSystems = nixpkgs.lib.genAttrs [
@@ -142,6 +148,7 @@
                   "homebrew/homebrew-core" = homebrew-core;
                   "homebrew/homebrew-cask" = homebrew-cask;
                   "nikitabobko/tap" = aerospace-tap;
+                  "withgraphite/tap" = graphite-tap;
                 };
               };
             }

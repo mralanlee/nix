@@ -1,6 +1,7 @@
 {
   imports = [
     ./alacritty.nix
+    ./claude.nix
     ./cli.nix
     ./fonts.nix
     ./git.nix

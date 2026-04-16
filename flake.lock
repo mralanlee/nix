@@ -129,6 +129,22 @@
         "type": "indirect"
       }
     },
+    "graphite-tap": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1775857514,
+        "narHash": "sha256-ZvwWs9TxQurWcSIIRRq65k4y1XlYhg0jHDiRsQojxck=",
+        "owner": "withgraphite",
+        "repo": "homebrew-tap",
+        "rev": "985f28bacbc99aedd2f1b12bf7beb7dec6d10f9e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "withgraphite",
+        "repo": "homebrew-tap",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -390,6 +406,7 @@
       "inputs": {
         "aerospace-tap": "aerospace-tap",
         "darwin": "darwin",
+        "graphite-tap": "graphite-tap",
         "home-manager": "home-manager",
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
