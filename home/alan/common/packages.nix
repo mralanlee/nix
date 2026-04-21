@@ -37,6 +37,7 @@
       lua
       uv
       jdk21
+      teleport
 
       zoom-us
       railway
