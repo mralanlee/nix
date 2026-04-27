@@ -132,6 +132,7 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
+              home-manager.backupFileExtension = "backup";
               home-manager.users.alan = import ./home/alan/darwin;
               home-manager.extraSpecialArgs = {
                 inherit hostname myConfig;
