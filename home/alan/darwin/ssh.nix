@@ -1,6 +1,13 @@
 {hostname, ...}: {
   programs.ssh = {
     matchBlocks = {
+      "10.22.6.*" = {
+        user = "alan";
+        identityFile = "~/.ssh/id_ed25519";
+        extraOptions = {
+          IdentityAgent = "none";
+        };
+      };
       "*" = {
         extraOptions =
           if hostname == "yoshi-mac"
