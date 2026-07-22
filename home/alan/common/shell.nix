@@ -125,6 +125,9 @@
       enable = true;
       enableZshIntegration = true;
       tmux.enableShellIntegration = config.myConfig.tmux.enable;
+      # Atuin owns Ctrl-R for zsh history; disable fzf's binding to avoid the
+      # clash (fzf keeps Ctrl-T / Alt-C).
+      historyWidget.zsh.command = "";
     };
 
     eza = {
