@@ -23,6 +23,7 @@
       # mise  # Temporarily disabled due to Fish build issue
       antigravity
       codex
+      pi-coding-agent
       gemini-cli
       devbox
       opencode
@@ -53,8 +54,9 @@
       stern
       railway
 
-      # terraform
-      terraform
+      # terraform removed: it builds from source and its Go link phase
+      # exhausts the system-wide open-file table on macOS. opentofu (below) is
+      # a drop-in replacement.
       terragrunt
       opentofu
       tgswitch
