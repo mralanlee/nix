@@ -21,14 +21,12 @@
 
       # developer tools
       # mise  # Temporarily disabled due to Fish build issue
-      antigravity
+      ngrok
       codex
       pi-coding-agent
-      gemini-cli
       devbox
       opencode
       vscode
-      code-cursor
       claude-code
       google-cloud-sdk
       alejandra
