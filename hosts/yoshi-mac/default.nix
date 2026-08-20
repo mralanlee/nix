@@ -13,7 +13,7 @@
       "withgraphite/tap/graphite"
     ];
     casks = [
-      "tailscale"
+      "tailscale-app"
     ];
   };
 }
