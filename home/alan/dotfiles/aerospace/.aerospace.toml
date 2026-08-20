@@ -77,6 +77,10 @@ run = 'layout floating'
 if.app-id = 'com.1password.1password'
 run = 'layout floating'
 
+[[on-window-detected]]
+if.app-id = 'com.tinyspeck.slackmacgap'
+run = 'layout floating'
+
 # [[on-window-detected]]
 # if.app-name-regex-substring = 'arc'
 # run = 'layout floating'
