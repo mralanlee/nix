@@ -11,6 +11,8 @@
     dig
     dnsutils
 
+    google-chrome
+
     # clipboard
     wl-clipboard
     xclip

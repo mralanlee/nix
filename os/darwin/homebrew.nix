@@ -18,7 +18,7 @@
       "1password-cli"
       "betterdisplay"
       "claude"
-      "docker"
+      "google-chrome"
       "karabiner-elements"
       "sf-symbols"
       "font-sf-mono"
