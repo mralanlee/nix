@@ -12,7 +12,6 @@
       telegram-desktop
       slack
       signal-desktop
-      discord
 
       nerd-fonts.fira-code
       nerd-fonts.jetbrains-mono
