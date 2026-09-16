@@ -22,7 +22,8 @@
       "karabiner-elements"
       "sf-symbols"
       "font-sf-mono"
-      "font-sf-pro"
+      # "font-sf-pro" # broken upstream: Apple renamed the pkg inside SF-Pro.dmg
+      # to SFProFonts.pkg, cask still expects "SF Pro Fonts.pkg". Re-enable once fixed.
     ];
 
     brews = [
