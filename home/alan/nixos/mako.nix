@@ -60,12 +60,6 @@
         border-color = "#8a61ff4d";
       };
 
-      "app-name=Discord" = {
-        default-timeout = 4000;
-        background-color = "#8a61ff26"; # slight purple tint
-        border-color = "#8a61ff4d";
-      };
-
       # Bluetooth notifications
       "app-name=blueman" = {
         default-timeout = 3000;
