@@ -12,7 +12,6 @@
     hypridle
     inputs.zen-browser.packages."${system}".twilight
     git-credential-manager
-    redisinsight
 
     bluebubbles
     railway

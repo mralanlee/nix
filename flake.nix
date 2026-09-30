@@ -148,8 +148,8 @@
                 taps = {
                   "homebrew/homebrew-core" = homebrew-core;
                   "homebrew/homebrew-cask" = homebrew-cask;
-                  "nikitabobko/tap" = aerospace-tap;
-                  "withgraphite/tap" = graphite-tap;
+                  "nikitabobko/homebrew-tap" = aerospace-tap;
+                  "withgraphite/homebrew-tap" = graphite-tap;
                 };
               };
             }

@@ -1,11 +1,12 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: {
   programs.git = {
     settings = {
-      user.email = "alanleunglee@gmail.com";
+      user.email = lib.mkForce "alanleunglee@gmail.com";
     };
   };
   programs.gh.gitCredentialHelper.enable = true;

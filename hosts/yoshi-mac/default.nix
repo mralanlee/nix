@@ -7,7 +7,7 @@
 
   homebrew = {
     taps = [
-      {name = "withgraphite/tap";}
+      {name = "withgraphite/homebrew-tap";}
     ];
     brews = [
       "withgraphite/tap/graphite"

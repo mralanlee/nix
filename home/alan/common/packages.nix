@@ -21,6 +21,7 @@
       # developer tools
       # mise  # Temporarily disabled due to Fish build issue
       ngrok
+      cloudflared
       codex
       pi-coding-agent
       devbox
