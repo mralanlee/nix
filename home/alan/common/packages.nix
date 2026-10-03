@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  inputs,
+  ...
+}: {
   home.packages =
     (with pkgs; [
       awscli2
@@ -19,6 +23,7 @@
       spotify
 
       # developer tools
+      go
       # mise  # Temporarily disabled due to Fish build issue
       ngrok
       cloudflared
@@ -61,5 +66,9 @@
       hclfmt
       # terraform-ls moved to neovim config
     ])
+    ++ [
+      # markdown review tool; not in nixpkgs, comes from its own flake
+      inputs.crit.packages.${pkgs.stdenv.hostPlatform.system}.crit
+    ]
     ++ (pkgs.lib.optionals (!pkgs.stdenv.isDarwin) [pkgs.ghostty]);
 }

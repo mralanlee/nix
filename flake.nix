@@ -9,6 +9,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
+    crit.url = "github:tomasz-tomczyk/crit";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     # macos
@@ -135,7 +136,7 @@
               home-manager.backupFileExtension = "backup";
               home-manager.users.alan = import ./home/alan/darwin;
               home-manager.extraSpecialArgs = {
-                inherit hostname myConfig;
+                inherit hostname myConfig inputs;
               };
             }
             nix-homebrew.darwinModules.nix-homebrew
