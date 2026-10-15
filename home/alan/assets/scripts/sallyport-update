@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+# Install or update the Sallyport CLI into ~/.local/bin.
+#
+# Why this is a script and not a nix derivation: sallyport's go.mod pulls
+# sallyport.app/sdk from canary-technologies-corp/sallyport-sdk, a PRIVATE repo
+# that even upstream CI reaches only with a per-job GitHub App token, so a pure
+# `buildGoModule` cannot resolve it. The GitHub release tarballs are the only
+# route, they need auth (the repo is internal), and upstream cuts several
+# releases a day -- so there is no tarball hash worth pinning either.
+#
+# Usage:
+#   sallyport-update            # install/update to the latest release
+#   sallyport-update v0.6.87    # install a specific tag
+set -euo pipefail
+
+repo="canary-technologies-corp/sallyport"
+bindir="${SALLYPORT_BIN_DIR:-$HOME/.local/bin}"
+tag="${1:-}"
+
+case "$(uname -s)/$(uname -m)" in
+  Darwin/arm64) asset_arch="darwin_arm64" ;;
+  Darwin/x86_64) asset_arch="darwin_amd64" ;;
+  Linux/aarch64 | Linux/arm64) asset_arch="linux_arm64" ;;
+  Linux/x86_64) asset_arch="linux_amd64" ;;
+  *)
+    echo "sallyport-update: unsupported platform $(uname -s)/$(uname -m)" >&2
+    exit 1
+    ;;
+esac
+
+if ! gh auth status >/dev/null 2>&1; then
+  echo "sallyport-update: not logged in to GitHub -- run 'gh auth login' first." >&2
+  exit 1
+fi
+
+if [ -z "$tag" ]; then
+  tag=$(gh release view --repo "$repo" --json tagName --jq .tagName)
+fi
+
+installed=""
+if [ -x "$bindir/sallyport" ]; then
+  # `sallyport version` prints the ldflag-stamped version; tolerate older builds.
+  installed=$("$bindir/sallyport" version 2>/dev/null | head -1 || true)
+fi
+
+if [ -n "$installed" ] && [[ "$installed" == *"${tag#v}"* ]]; then
+  echo "sallyport ${tag} already installed in $bindir"
+  exit 0
+fi
+
+echo "installing sallyport ${tag} (${asset_arch}) into $bindir"
+mkdir -p "$bindir"
+
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+
+gh release download "$tag" \
+  --repo "$repo" \
+  --pattern "sallyport_*_${asset_arch}.tar.gz" \
+  --output - |
+  tar -xzf - -C "$tmp" sallyport
+
+# Replace via mv so a running binary is not overwritten in place.
+chmod +x "$tmp/sallyport"
+mv -f "$tmp/sallyport" "$bindir/sallyport"
+
+"$bindir/sallyport" version 2>/dev/null || echo "installed $bindir/sallyport"
