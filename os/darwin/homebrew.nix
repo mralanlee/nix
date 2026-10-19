@@ -1,4 +1,4 @@
-{
+{config, ...}: {
   homebrew = {
     enable = true;
     global = {
@@ -12,17 +12,18 @@
       # (2026-08-20, 2026-09-24) after nix-homebrew brew bumps broke state detection.
       cleanup = "check";
     };
-    taps = [
-      # Must match nix-homebrew.taps keys in flake.nix so cleanup checks see them as kept.
-      {name = "homebrew/homebrew-cask";}
-      {name = "nikitabobko/homebrew-tap";}
-    ];
+    # Derived from nix-homebrew.taps (flake.nix) so cleanup checks never flag a
+    # tap nix-homebrew installed. Pattern from the nix-homebrew README.
+    # trusted: brew now ignores formulae from untrusted taps (nix-homebrew#172).
+    taps = map (name: {
+      inherit name;
+      trusted = true;
+    }) (builtins.attrNames config.nix-homebrew.taps);
 
     casks = [
       "1password"
       "1password-cli"
       "betterdisplay"
-      "claude"
       "google-chrome"
       "karabiner-elements"
       "sf-symbols"

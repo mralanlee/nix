@@ -20,4 +20,15 @@ in {
 
   # sallyport-update installs into ~/.local/bin, so put it on PATH.
   home.sessionPath = ["$HOME/.local/bin"];
+
+  # Bootstrap the binary on first activation. Only when missing (updates stay
+  # manual via `sallyport-update`), and never fatal: gh may be logged out or offline.
+  home.activation.sallyport = lib.mkIf (hostname == "canary") (
+    lib.hm.dag.entryAfter ["writeBoundary"] ''
+      if [ ! -x "$HOME/.local/bin/sallyport" ]; then
+        run ${sallyport-update}/bin/sallyport-update \
+          || echo "sallyport: install skipped; run 'sallyport-update' after 'gh auth login'" >&2
+      fi
+    ''
+  );
 }
