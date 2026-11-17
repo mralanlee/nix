@@ -1,0 +1,169 @@
+# Keep the Herdr app's configuration in this nix repo.
+#
+# Why this is a copy and not home-manager symlinks: Herdr rewrites its config
+# while it runs. It replaces settings.json by rename (which would swap a store
+# symlink for a plain file) and writes generated files into every mod folder,
+# so the live files must stay ordinary, writable files.
+#
+#   herdr-config backup   copy the live config into the repo (review with git)
+#   herdr-config status   show what differs between the live config and the repo
+#   herdr-config apply <dir>   install <dir> over the live config (run by
+#                              home-manager on every rebuild)
+#
+# Only the files that are yours are managed: settings.json, keys.json,
+# programs.json, themes, and the layouts and mods Herdr did not ship
+# (installed.json lists the shipped ones, which Herdr replaces on every start).
+# Window position, focus and mod state (shared.json, view.json, data/,
+# layouts/.state/) stay local to the machine.
+#
+# The repo is HERDR_NIX_REPO, else the nix checkout or worktree you are in,
+# else ~/projects/nix.
+
+live="${HERDR_APP_HOME:-$HOME/.config/herdr-app}"
+state="${XDG_STATE_HOME:-$HOME/.local/state}/herdr-nix"
+
+# Written by Herdr or by nix, never worth keeping in the repo.
+generated=(
+  --exclude=gpui-kit.d.ts
+  --exclude=runtime.json
+  --exclude='*.error'
+  --exclude='*.reset-*'
+  --exclude='*.old-*'
+  --exclude='*.corrupt-*'
+  --exclude=.DS_Store
+)
+
+# Scratch copy of the live files that are yours, removed on exit.
+stage=""
+trap 'if [ -n "$stage" ]; then rm -rf "$stage"; fi' EXIT
+
+die() {
+  echo "herdr-config: $*" >&2
+  exit 1
+}
+
+repo_dir() {
+  local top
+  if [ -n "${HERDR_NIX_REPO:-}" ]; then
+    top="$HERDR_NIX_REPO"
+  elif top="$(git rev-parse --show-toplevel 2>/dev/null)" && [ -d "$top/home/alan/dotfiles" ]; then
+    :
+  else
+    top="$HOME/projects/nix"
+  fi
+  [ -d "$top/home/alan/dotfiles" ] || die "no nix repo at $top (set HERDR_NIX_REPO)"
+  echo "$top/home/alan/dotfiles/herdr"
+}
+
+# The managed entries of a config tree, one per line: top-level files, and the
+# direct children of themes/, layouts/ and mods/.
+entries() {
+  (
+    cd "$1"
+    find . -mindepth 1 -maxdepth 1 -type f
+    for dir in themes layouts mods; do
+      if [ -d "$dir" ]; then
+        find "./$dir" -mindepth 1 -maxdepth 1
+      fi
+    done
+  ) | sed 's|^\./||' | sort
+}
+
+# Copy the live files that are yours into a fresh $stage.
+stage_live() {
+  local installed="$live/installed.json" entry name
+  [ -f "$installed" ] || die "$installed not found; start Herdr once first"
+  stage="$(mktemp -d)"
+
+  cd "$live"
+  for entry in settings.json keys.json programs.json; do
+    if [ -f "$entry" ]; then
+      rsync -r --relative "./$entry" "$stage/"
+    fi
+  done
+  if [ -d themes ]; then
+    rsync -r --relative "${generated[@]}" ./themes "$stage/"
+  fi
+  # A layout's files share its name: main-folders.json, main-folders.png.
+  for entry in layouts/*; do
+    [ -f "$entry" ] || continue
+    name="$(basename "$entry")"
+    name="${name%%.*}"
+    if ! jq -e --arg key "layout:$name" 'has($key)' "$installed" >/dev/null; then
+      rsync -r --relative "${generated[@]}" "./$entry" "$stage/"
+    fi
+  done
+  for entry in mods/*/; do
+    [ -d "$entry" ] || continue
+    name="$(basename "$entry")"
+    if ! jq -e --arg key "$name" 'has($key)' "$installed" >/dev/null; then
+      rsync -r --relative "${generated[@]}" "./mods/$name" "$stage/"
+    fi
+  done
+}
+
+backup() {
+  local dest
+  dest="$(repo_dir)"
+  stage_live
+  mkdir -p "$dest"
+  rsync -rc --delete "$stage/" "$dest/"
+  echo "Backed up $live to $dest"
+  git -C "$dest" status --short -- . || true
+}
+
+status() {
+  local dest
+  dest="$(repo_dir)"
+  [ -d "$dest" ] || die "$dest does not exist; run 'herdr-config backup' first"
+  stage_live
+  if diff -rq "$stage" "$dest" | sed -e "s|$stage|live|g" -e "s|$dest|repo|g" | grep .; then
+    echo "The live config and the repo differ: 'herdr-config backup' keeps the live side, a rebuild keeps the repo side."
+    return 1
+  fi
+  echo "The live Herdr config matches $dest"
+}
+
+apply() {
+  local src="${1:-}" manifest="$state/manifest" replaced entry mod
+  [ -d "$src" ] || die "apply needs a config directory"
+  replaced="$state/replaced/$(date +%Y%m%d-%H%M%S)"
+  mkdir -p "$live" "$state"
+
+  # Whatever an earlier rebuild installed and the repo no longer has goes away.
+  if [ -f "$manifest" ]; then
+    while IFS= read -r entry; do
+      case "$entry" in "" | /* | *..*) continue ;; esac
+      if [ ! -e "$src/$entry" ] && [ -e "$live/$entry" ]; then
+        mkdir -p "$replaced/$(dirname "$entry")"
+        mv "$live/$entry" "$replaced/$entry"
+      fi
+    done <"$manifest"
+  fi
+
+  # Anything overwritten or deleted is kept under $replaced, so an in-app edit
+  # that was never backed up is not lost.
+  rsync -rpc --chmod=Du=rwx,Dgo=,Fu+w --backup --backup-dir="$replaced" \
+    --exclude=/mods/ "$src/" "$live/"
+  if [ -d "$src/mods" ]; then
+    for mod in "$src"/mods/*/; do
+      mod="$(basename "$mod")"
+      mkdir -p "$live/mods/$mod"
+      rsync -rpc --chmod=Du=rwx,Dgo=,Fu+w --delete --exclude=gpui-kit.d.ts \
+        --backup --backup-dir="$replaced/mods/$mod" \
+        "$src/mods/$mod/" "$live/mods/$mod/"
+    done
+  fi
+
+  entries "$src" >"$manifest"
+  if [ -d "$replaced" ]; then
+    echo "herdr-config: the live Herdr config differed from the repo; the replaced files are in $replaced" >&2
+  fi
+}
+
+case "${1:-}" in
+  backup) backup ;;
+  status) status ;;
+  apply) apply "${2:-}" ;;
+  *) die "usage: herdr-config backup | status | apply <dir>" ;;
+esac
