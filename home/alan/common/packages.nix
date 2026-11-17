@@ -28,6 +28,8 @@
 
       # developer tools
       go
+      cargo
+      rustc
       # mise  # Temporarily disabled due to Fish build issue
       ngrok
       cloudflared
