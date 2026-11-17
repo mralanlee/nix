@@ -6,6 +6,8 @@
   programs = {
     atuin = {
       enable = true;
+      # e2e_capture PTY test times out in the build sandbox (atuin 18.23.0)
+      package = pkgs.atuin.overrideAttrs (_: {doCheck = false;});
       enableZshIntegration = true;
     };
 
