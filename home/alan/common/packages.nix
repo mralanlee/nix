@@ -3,6 +3,10 @@
   inputs,
   ...
 }: {
+  # nodejs lives in the read-only nix store; send `npm i -g` to $HOME instead
+  home.sessionVariables.NPM_CONFIG_PREFIX = "$HOME/.npm-global";
+  home.sessionPath = ["$HOME/.npm-global/bin"];
+
   home.packages =
     (with pkgs; [
       awscli2
