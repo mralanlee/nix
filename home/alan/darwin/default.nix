@@ -3,6 +3,7 @@
     ../common
     ./aerospace.nix
     ./git.nix
+    ./herdr.nix
     ./packages.nix
     ./shell.nix
     ./sketchybar.nix

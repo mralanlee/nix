@@ -1,0 +1,23 @@
+// Worktree names: cities around the world, Conductor-style.
+export const CITIES = [
+  "accra", "addis-ababa", "adelaide", "algiers", "almaty", "amman", "amsterdam", "anchorage", "ankara", "antwerp",
+  "asuncion", "athens", "atlanta", "auckland", "austin", "baku", "bali", "bandung", "bangalore", "bangkok",
+  "barcelona", "beirut", "belfast", "belgrade", "bergen", "berlin", "bern", "bilbao", "bogota", "bologna",
+  "bordeaux", "boston", "bratislava", "brisbane", "bristol", "brussels", "bucharest", "budapest", "buenos-aires", "buffalo",
+  "busan", "cairo", "calgary", "cambridge", "canberra", "cape-town", "caracas", "cardiff", "casablanca", "cebu",
+  "charlotte", "chengdu", "chicago", "copenhagen", "cordoba", "cork", "cusco", "dakar", "dallas", "da-nang",
+  "delhi", "denver", "doha", "dubai", "dublin", "dubrovnik", "durban", "edinburgh", "florence", "fukuoka",
+  "gdansk", "geneva", "genoa", "ghent", "glasgow", "gothenburg", "granada", "guadalajara", "halifax", "hamburg",
+  "hanoi", "havana", "helsinki", "hiroshima", "hobart", "honolulu", "houston", "hyderabad", "istanbul", "jakarta",
+  "jeddah", "johannesburg", "kampala", "karachi", "kathmandu", "kigali", "kingston", "kyoto", "lagos", "la-paz",
+  "leeds", "lima", "lisbon", "ljubljana", "london", "los-angeles", "luanda", "lyon", "madrid", "malaga",
+  "manila", "maputo", "marrakesh", "marseille", "medellin", "melbourne", "mexico-city", "miami", "milan", "minsk",
+  "mombasa", "montevideo", "montreal", "moscow", "mumbai", "munich", "muscat", "nagoya", "nairobi", "nantes",
+  "naples", "nashville", "nice", "osaka", "oslo", "ottawa", "oxford", "palermo", "panama", "paris",
+  "perth", "philadelphia", "phoenix", "porto", "portland", "prague", "quebec", "quito", "reykjavik", "riga",
+  "rio", "riyadh", "rome", "rotterdam", "salvador", "san-diego", "santiago", "sao-paulo", "sapporo", "sarajevo",
+  "seattle", "seoul", "seville", "shanghai", "singapore", "sofia", "split", "stockholm", "sydney", "taipei",
+  "tallinn", "tangier", "tbilisi", "tehran", "tel-aviv", "tokyo", "toronto", "toulouse", "tunis", "turin",
+  "ulaanbaatar", "valencia", "valletta", "vancouver", "venice", "vienna", "vilnius", "warsaw", "wellington", "windhoek",
+  "yerevan", "yokohama", "zagreb", "zanzibar", "zurich",
+];
