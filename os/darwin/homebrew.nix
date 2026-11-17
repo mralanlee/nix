@@ -41,9 +41,7 @@
     masApps = {
       Amphetamine = 937984704;
       Flycut = 442160987;
-      "Windows App" = 1295203466;
       # Preinstalled Apple apps; listed so cleanup checks do not flag them.
-      Keynote = 409183694;
       Numbers = 409203825;
       Pages = 409201541;
       Xcode = 497799835;

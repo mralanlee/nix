@@ -13,6 +13,7 @@
     ];
     casks = [
       "tailscale-app"
+      "claude"
     ];
   };
 }
