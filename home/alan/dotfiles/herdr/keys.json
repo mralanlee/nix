@@ -56,7 +56,18 @@
     "ctrl-6": "space.select:6",
     "ctrl-7": "space.select:7",
     "ctrl-8": "space.select:8",
-    "ctrl-9": "space.select:9"
+    "ctrl-9": "space.select:9",
+    "ctrl-a n": "tab.next",
+    "ctrl-a p": "tab.prev",
+    "ctrl-a 1": "tab.select:1",
+    "ctrl-a 2": "tab.select:2",
+    "ctrl-a 3": "tab.select:3",
+    "ctrl-a 4": "tab.select:4",
+    "ctrl-a 5": "tab.select:5",
+    "ctrl-a 6": "tab.select:6",
+    "ctrl-a 7": "tab.select:7",
+    "ctrl-a 8": "tab.select:8",
+    "ctrl-a 9": "tab.select:9"
   },
   "terminal": {
     "cmd-f": "terminal.search",
@@ -68,7 +79,12 @@
     "alt-backspace": "send:\u0017",
     "cmd-left": "send:\u0001",
     "cmd-right": "send:\u0005",
-    "cmd-backspace": "send:\u0015"
+    "cmd-backspace": "send:\u0015",
+    "ctrl-a ctrl-a": "send:\u0001",
+    "ctrl-a ctrl-l": "send:\f",
+    "ctrl-a ctrl-k": "send:\u000b",
+    "ctrl-a ctrl-j": "send:\n",
+    "ctrl-a [": "mod.open:copy-mode"
   },
   "layout:main-folders": {
     "alt-down": "space-folders.next",
@@ -76,6 +92,10 @@
     "ctrl-shift-pagedown": "space-folders.next",
     "ctrl-shift-pageup": "space-folders.prev",
     "ctrl-space shift-n": "space-folders.next",
-    "ctrl-space shift-p": "space-folders.prev"
+    "ctrl-space shift-p": "space-folders.prev",
+    "ctrl-h": "space-folders.go-left",
+    "ctrl-j": "space-folders.go-down",
+    "ctrl-k": "space-folders.go-up",
+    "ctrl-l": "space-folders.go-right"
   }
 }

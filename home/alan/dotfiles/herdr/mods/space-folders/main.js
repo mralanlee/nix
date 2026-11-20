@@ -1,4 +1,4 @@
-// Workspace spaces: stable colored avatars, worktrees under their checkout,
+// Workspace spaces: a header per repo with its spaces under it (stable colored avatars outside git),
 // grouped by machine when more than one is known. After a space's name, the repo
 // its first terminal is in now, only where unusual: branch, ahead/behind. Agent state lives in the agents list, not here. Click to
 // switch, right-click for its menu, drag to reorder.
@@ -13,7 +13,7 @@
 
 import { View, div, svg } from "gpui-kit";
 import { v_flex, h_flex, InputState, Input } from "gpui-base";
-import { spaces, machines, panes, run, openOverlay, closeOverlay, props, exec, hc, theme, shared, setShared, watchFolder, window, layout, pickFolder, home, nextCommand } from "herdr";
+import { spaces, agents, machines, panes, run, openOverlay, closeOverlay, props, exec, hc, theme, shared, setShared, watchFolder, window, layout, pickFolder, home, nextCommand, checking, focused } from "herdr";
 
 // A machine's folders live in a file in its home, so every screen showing its
 // spaces shows the same folders: { list: [{ id, name, folded }], of: { spaceId:
@@ -151,6 +151,51 @@ export function tone(t, status) {
 const UNREAD = "#3b8eea";
 const unreadDot = () => div().size(7).flex_none().rounded(4).bg(UNREAD);
 
+// What a space is about, shown in place of its name, as the agents list says it after a space's name: a tab
+// someone named, else the title its agent set. Nothing when the title only
+// repeats the program, a path or user@host, or the tab has just its number.
+// The first agent in the space that says something speaks for it.
+const clean = (s) => (s ?? "").replace(/^[^\p{L}\p{N}\p{Ps}\p{Pi}]+/u, "").replace(/^\[ [!.] \] /, "").trim();
+function telling(a, tab) {
+  const prog = a.program?.name;
+  if (tab?.named && tab.name !== prog && !/^\d+$/.test(tab.name)) return tab.name;
+  const live = clean(a.title);
+  const path = /^[~/]|^[A-Za-z]:\\/.test((a.title ?? "").replace(/^[^\p{L}\p{N}~/]+/u, ""));
+  return live && live !== a.address && live !== prog && !path && !live.includes("@") && live.toLowerCase() !== a.program?.key ? live : null;
+}
+function abouts() {
+  const tabs = new Map(spaces().flatMap((s) => s.tabs ?? []).map((tab) => [tab.id, tab]));
+  const out = {};
+  for (const a of agents()) out[a.space] ??= telling(a, tabs.get(a.tab));
+  return out;
+}
+
+// A branch's pull request, asked of GitHub through `gh` where the space works:
+// no oftener than this per place, a finished one (merged, closed) far less.
+const PR_EVERY = 90000, PR_SETTLED = 900000;
+const PR_FIELDS = "number,state,isDraft,url,title,reviewDecision,statusCheckRollup";
+const PR_JQ = '{number,state,isDraft,url,title,reviewDecision,checks:[.statusCheckRollup[]|(.conclusion // .state // .status // "")]}';
+// Its checks as one word: failing if any failed, else running if any hasn't finished.
+function checksOf(list) {
+  if (!list?.length) return null;
+  if (list.some((c) => ["FAILURE", "ERROR", "TIMED_OUT", "CANCELLED", "ACTION_REQUIRED", "STARTUP_FAILURE"].includes(c))) return "failing";
+  if (list.some((c) => !["SUCCESS", "NEUTRAL", "SKIPPED"].includes(c))) return "running";
+  return "passing";
+}
+const REVIEW = { APPROVED: "approved", CHANGES_REQUESTED: "changes requested", REVIEW_REQUIRED: "review required" };
+
+// ctrl+h/j/k/l between panes, as vim-tmux-navigator does it: Vim gets the key
+// (it moves between its own windows, and asks Herdr for `pane.go` at its edge,
+// see neovim.nix); anywhere else the key moves between Herdr's panes.
+const VIM_KEY = { left: "ctrl+h", down: "ctrl+j", up: "ctrl+k", right: "ctrl+l" };
+function go(direction) {
+  if (!VIM_KEY[direction]) return;
+  const at = focused()?.pane;
+  const p = at && panes().find((x) => x.pane === at);
+  if (p?.terminal && ["nvim", "vim", "vi"].includes(p.program?.key)) hc(["keys", p.terminal, VIM_KEY[direction]]).catch(() => {});
+  else run("pane.go", { direction });
+}
+
 const NEW_FOLDER = "New folder";
 
 // A path's last folder name: "~/Projects/herdr/" gives "herdr"; "~" or "/" give "".
@@ -190,6 +235,8 @@ export default class Spaces extends View {
     this.moving = null; // a folder being dragged: { machine, id, index }
     this.overMove = null;
     this.git = {}; // where() -> { name, branch, ahead, behind, repo, linked }, null: not a repo
+    this.pr = {}; // where() -> { branch, at, found: its pull request or null }
+    this.noGh = new Set(); // machines where `gh` couldn't start
     this.checked = {}; // where() -> when it was last looked at
     this.unsure = new Set(); // where()s git couldn't answer for (a machine away)
     this.pending = new Set(); // where()s to look at next
@@ -226,6 +273,7 @@ export default class Spaces extends View {
       for (;;) {
         const c = String(await nextCommand()).split(".").pop();
         if (c === "next" || c === "prev") this.step(c === "next" ? 1 : -1);
+        else if (c.startsWith("go-")) go(c.slice(3));
         cx.notify();
       }
     });
@@ -350,12 +398,58 @@ export default class Spaces extends View {
         }
       }
       this.git[key] = info;
+      this.checkPr(key, info, cx);
       if (!on) this.watch(repo, cx);
     } catch {
       // Couldn't ask (the machine is away): keep what it showed, look again later.
       this.git[key] ??= null;
       this.unsure.add(key);
     }
+  }
+
+  // The pull request of the branch a place is on. Not awaited: GitHub's answer
+  // takes a moment, and the git looks behind this one shouldn't wait for it.
+  checkPr(key, info, cx) {
+    const [on, cwd] = JSON.parse(key);
+    if (checking() || this.noGh.has(on)) return;
+    const branch = info.branch;
+    if (!branch || branch === "main" || branch === "master") { delete this.pr[key]; return; }
+    const was = this.pr[key]?.branch === branch ? this.pr[key] : null;
+    const settled = was?.found && was.found.state !== "OPEN";
+    if (was && Date.now() - was.at < (settled ? PR_SETTLED : PR_EVERY)) return;
+    // What it showed stays until the answer is in; another branch's goes now.
+    this.pr[key] = { branch, at: Date.now(), found: was?.found ?? null };
+    cx.spawn(async (cx) => {
+      try {
+        const r = await exec("gh", ["pr", "view", "--json", PR_FIELDS, "--jq", PR_JQ], { cwd, on, timeout: 20000 });
+        if (this.pr[key]?.branch !== branch) return;
+        if (r.code === 0) this.pr[key].found = JSON.parse(r.stdout);
+        else if (/no pull requests found/i.test(r.stderr)) this.pr[key].found = null;
+        // Anything else (offline, not signed in, not on GitHub): keep what it showed.
+      } catch { this.noGh.add(on); }
+      cx.notify();
+    });
+  }
+
+  // "#123" in its state's color (open green, draft dim, merged purple, closed red),
+  // then its checks while it's open. Click opens it in the browser.
+  prChip(pr, w, t) {
+    const open = pr.state === "OPEN";
+    const state = pr.state === "MERGED" ? "merged" : pr.state === "CLOSED" ? "closed" : pr.isDraft ? "draft" : "open";
+    const color = { merged: t.ansi5, closed: t.ansi1, draft: t.dim, open: t.ansi2 }[state];
+    const checks = open ? checksOf(pr.checks) : null;
+    const review = open ? REVIEW[pr.reviewDecision] : null;
+    const says = [`#${pr.number} ${pr.title ?? ""}`.trim(), [state, checks && `checks ${checks}`, review].filter(Boolean).join(" \u00b7 ")].join("\n");
+    return h_flex().id(`pr-${w.id}`).flex_none().gap(3).px(3).items_center().rounded(4).text_size(11.5).text_color(color).cursor_pointer()
+      .hover((s) => s.bg(t.hover))
+      .tooltip(says)
+      // The row selects its space on mouse up; a press here isn't that.
+      .on_mouse_down("left", (_e, cx) => cx.stop_propagation())
+      .on_click((_e, cx) => { cx.stop_propagation(); exec(window()?.platform === "macos" ? "open" : "xdg-open", [pr.url]).catch(() => {}); })
+      .child(`#${pr.number}`)
+      .when(checks === "failing", (el) => el.child(div().text_color(t.ansi1).child("\u2717")))
+      .when(checks === "running", (el) => el.child(div().text_color(t.ansi3).child("\u25cf")))
+      .when(checks === "passing", (el) => el.child(div().text_color(t.ansi2).child("\u2713")));
   }
 
   watch(repo, cx) {
@@ -649,33 +743,25 @@ export default class Spaces extends View {
         .child(button("folder-save", "Save", true, () => this.saveFolder())));
   }
 
-  // Spaces in order, each worktree space moved under its main checkout's.
+  // Spaces in order. A repo is a header with its name and a folder icon, where
+  // the first of its spaces is; under it every space working in it, the one on
+  // its main checkout first, then its worktrees. Spaces outside git stand alone.
   ordered() {
     const sp = spaces(), ps = panes();
     const ready = (w) => this.shown.has(w.id) || where(w, ps) in this.git || Date.now() - (this.born[w.id] ??= Date.now()) > 1500;
     for (const w of sp) if (!this.shown.has(w.id) && ready(w)) this.shown.add(w.id);
-    const list = sp.map((w, i) => ({ w, i, g: this.git[where(w, ps)] ?? null })).filter((r) => this.shown.has(r.w.id));
-    const mains = new Set(list.filter((r) => r.g && !r.g.linked).map((r) => r.g.repo));
-    const nested = (r) => r.g?.linked && mains.has(r.g.repo);
+    const list = sp.map((w, i) => ({ w, i, g: this.git[where(w, ps)] ?? null, pr: this.pr[where(w, ps)]?.found ?? null })).filter((r) => this.shown.has(r.w.id));
     const out = [];
-    const placed = new Set(); // repos whose worktrees are listed (under the first of its spaces)
+    const placed = new Set(); // repos already listed
     for (const r of list) {
-      if (nested(r)) continue;
-      // Worktrees whose main checkout has no space: under a header with the repo's
-      // name, where the first of them is.
-      if (r.g?.linked) {
-        if (placed.has(r.g.repo)) continue;
-        placed.add(r.g.repo);
-        const kids = list.filter((k) => k.g?.linked && k.g.repo === r.g.repo);
-        out.push({ ...r, tree: null, head: r.g.name });
-        kids.forEach((k, n) => out.push({ ...k, tree: n === kids.length - 1 ? "└─" : "├─" }));
-        continue;
-      }
-      out.push({ ...r, tree: null });
-      if (!r.g || r.g.linked || placed.has(r.g.repo)) continue;
+      if (!r.g) { out.push({ ...r, tree: null }); continue; }
+      if (placed.has(r.g.repo)) continue;
       placed.add(r.g.repo);
-      const kids = list.filter((k) => nested(k) && k.g.repo === r.g.repo);
-      kids.forEach((k, n) => out.push({ ...k, tree: n === kids.length - 1 ? "└─" : "├─" }));
+      const same = list.filter((k) => k.g?.repo === r.g.repo);
+      const kids = [...same.filter((k) => !k.g.linked), ...same.filter((k) => k.g.linked)];
+      // The header goes by the main checkout's space (its folder), else the first worktree's.
+      out.push({ ...kids[0], tree: null, head: r.g.name });
+      kids.forEach((k, n) => out.push({ ...k, tree: n === kids.length - 1 ? "\u2514\u2500" : "\u251c\u2500" }));
     }
     return out;
   }
@@ -748,14 +834,16 @@ export default class Spaces extends View {
   // Only what's unusual, after the name: "herdr \u00b7 spike \u21912 \u21931". The repo or
   // branch goes when the name already says it (a worktree is named after its branch),
   // and master/main go: nearly every space is on one.
-  gitTail(g, tree, name, t) {
+  // `fill`: it takes the room left in the row; else only what it needs, after a description.
+  gitTail(g, tree, name, t, fill = true) {
     const raw = g.branch ?? "detached";
     const same = (a) => a.toLowerCase() === name.toLowerCase();
     const branch = same(raw) || raw === "master" || raw === "main" ? "" : raw;
     const repo = tree || same(g.name) ? "" : g.name;
     const where = [repo, branch].filter(Boolean).join(" \u00b7 ");
     return h_flex()
-      .flex_1()
+      .when(fill, (el) => el.flex_1())
+      .when(!fill, (el) => el.flex_none().max_w(110))
       .min_w(0)
       .gap(5)
       .justify_end()
@@ -767,11 +855,15 @@ export default class Spaces extends View {
       .when(g.behind > 0, (el) => el.child(div().flex_none().text_color(t.ansi1).child(`\u2193${g.behind}`)));
   }
 
-  row({ w, i, g, tree, folder, nested }, t) {
+  row({ w, i, g, pr, tree, folder, nested }, t) {
     const on = w.active;
     const colors = shared("space.colors") ?? {};
     const color = colors[w.id] ?? "ansi6";
     const fill = color.startsWith("#") ? color : (MARK[color] ?? t[color]);
+    const about = this.about?.[w.id];
+    // Under its repo's header a main checkout's own name would only repeat the
+    // repo's: its branch says more, unless someone named the space.
+    const plain = tree && g && !g.linked && !w.named ? (g.branch ?? w.name) : w.name;
     return v_flex()
       .relative()
       .id(`space-${w.id}`)
@@ -824,9 +916,14 @@ export default class Spaces extends View {
           .items_center()
           .when(Boolean(tree), el => el.pl(22).child(svg("mods/workspace-chrome/branch.svg").size(13).text_color(t.dim)))
           .when(!tree, el => el.child(h_flex().size(18).flex_none().rounded(5).bg(fill).items_center().justify_center().text_size(10.5).font_bold().text_color("#ffffff").child([...w.name][0]?.toUpperCase() ?? "?")))
-          .child(div().flex_shrink(0).max_w(150).truncate().text_color(t.foreground).child(w.name))
+          // What it's about stands in for its name (a worktree's is only its
+          // branch); the name is a hover away. No agent saying anything: the name.
+          .when(Boolean(about), (el) => el.child(div().id(`space-about-${w.id}`).flex_1().min_w(0).truncate().text_color(t.foreground).tooltip(w.name).child(about)))
+          .when(!about, (el) => el.child(div().flex_shrink(0).max_w(150).truncate().text_color(t.foreground).child(plain)))
           .when(w.status === "done", (el) => el.child(unreadDot()))
-          .child(g ? this.gitTail(g, tree, w.name, t) : div().flex_1())
+          .when(Boolean(g), (el) => el.child(this.gitTail(g, tree, about ? w.name : plain, t, !about)))
+          .when(!g && !about, (el) => el.child(div().flex_1()))
+          .when(Boolean(g && pr), (el) => el.child(this.prChip(pr, w, t)))
           .when(this.hovered === w.id && this.pressed === null, (el) => el.child(
             div().id(`archive-${w.id}`).flex_none().p(2).rounded(4).text_color(t.dim).cursor_pointer()
               .hover((s) => s.bg(t.hover).text_color(t.foreground))
@@ -839,7 +936,7 @@ export default class Spaces extends View {
       );
   }
 
-  // A repo's name over its worktree spaces when no space is on its main checkout.
+  // A repo's name over the spaces working in it.
   repoHead({ w, head, folder, nested }, t) {
     return h_flex()
       .id(`repo-${w.id}`)
@@ -889,6 +986,7 @@ export default class Spaces extends View {
     const leaving = Boolean(dragged && folderOf(dragged, folders(dragged.machine ?? null), panes()));
     const button = (id, icon, action) => div().id(id).size(26).flex_none().flex().items_center().justify_center().rounded(6)
       .hover(s => s.bg(t.hover).text_color(t.foreground)).on_click(action).child(svg(`mods/workspace-chrome/${icon}.svg`).size(14));
+    this.about = collapsed ? {} : abouts();
     const seen = [], rows = this.grouped(t, collapsed, seen);
     this.seen = seen;
     return v_flex().size_full().min_h(0).bg(t.chrome).text_size(13)
