@@ -1,25 +1,26 @@
 #!/bin/bash
 
+# Redraws every workspace dot in one sketchybar call.
+# Focused: large purple. Visible on another monitor: purple. Has windows: white. Empty: dim.
+
 source "$CONFIG_DIR/globalstyles.sh"
 
-# Get the workspace number from the item name (aerospace.1 -> 1)
-WORKSPACE_ID=${NAME#aerospace.}
+AEROSPACE=/run/current-system/sw/bin/aerospace
+FOCUSED=$($AEROSPACE list-workspaces --focused)
+VISIBLE=" $($AEROSPACE list-workspaces --monitor all --visible | tr '\n' ' ')"
+OCCUPIED=" $($AEROSPACE list-workspaces --monitor all --empty no | tr '\n' ' ')"
 
-# Get current focused workspace directly from aerospace
-CURRENT_WORKSPACE=$(/run/current-system/sw/bin/aerospace list-workspaces --focused)
+# aerospace not answering (starting up): keep the bar as it is
+[ -n "$FOCUSED" ] || exit 0
 
-# Debug output to see what's happening
-echo "Space script: NAME=$NAME, WORKSPACE_ID=$WORKSPACE_ID, CURRENT_WORKSPACE=$CURRENT_WORKSPACE" >> /tmp/sketchybar_debug.log
+args=()
+for sid in 1 2 3 4 5 6 7 8 9; do
+  color=0x40e6dcff size=10
+  [[ "$OCCUPIED" == *" $sid "* ]] && color=$ICON_COLOR
+  [[ "$VISIBLE" == *" $sid "* ]] && color=$ACTIVE_COLOR
+  [ "$sid" = "$FOCUSED" ] && size=15
+  args+=(--set "aerospace.$sid" icon.background.color="$color"
+    icon.background.height="$size" icon.background.corner_radius="$size")
+done
 
-# Update this specific workspace item
-if [ "$WORKSPACE_ID" = "$CURRENT_WORKSPACE" ]; then
-  echo "Setting $NAME as active" >> /tmp/sketchybar_debug.log
-  sketchybar --set $NAME icon.background.color=$ACTIVE_COLOR \
-                       icon.background.height=15 \
-                       icon.background.corner_radius=15
-else
-  echo "Setting $NAME as inactive" >> /tmp/sketchybar_debug.log
-  sketchybar --set $NAME icon.background.color=$ICON_COLOR \
-                       icon.background.height=10 \
-                       icon.background.corner_radius=10
-fi
+sketchybar "${args[@]}"
