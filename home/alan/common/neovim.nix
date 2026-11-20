@@ -108,6 +108,25 @@ in {
         checker = { enabled = false },
         change_detection = { enabled = false },
       })
+
+      -- ctrl+h/j/k/l between windows, and out of the edge one into the Herdr pane
+      -- beside it (Herdr gives Vim these keys, see herdr's space-folders mod).
+      if vim.env.HC_TERMINAL_SOCKET and not vim.env.TMUX then
+        local function herdr_nav()
+          for key, direction in pairs({ h = "left", j = "down", k = "up", l = "right" }) do
+            vim.keymap.set("n", "<C-" .. key .. ">", function()
+              local win = vim.api.nvim_get_current_win()
+              vim.cmd.wincmd(key)
+              if vim.api.nvim_get_current_win() == win then
+                pcall(vim.system, { "herdr-app", "do", "pane.go", "--direction", direction })
+              end
+            end, { desc = "Go to " .. direction .. " window or Herdr pane", silent = true })
+          end
+        end
+        herdr_nav()
+        -- LazyVim sets its own after startup: ours go over them.
+        vim.api.nvim_create_autocmd("User", { pattern = "LazyVimKeymaps", callback = herdr_nav })
+      end
     '';
 
     extraPackages = with pkgs; [
